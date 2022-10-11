@@ -51,5 +51,7 @@
     <string name="add_widget">Add Widget</string>
     <string name="app_widget_description">Student story widget banner</string>
     <string name="empty_data">No data available!</string>
+    <string name="text_act_map_stories">Map Stories</string>
+    <string name="title_activity_maps_story">MapsStoryActivity</string>
 
 </resources>

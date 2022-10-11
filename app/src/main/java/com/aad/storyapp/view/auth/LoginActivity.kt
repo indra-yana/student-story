@@ -12,7 +12,7 @@ import com.aad.storyapp.datasource.remote.response.ResponseStatus
 import com.aad.storyapp.helper.enable
 import com.aad.storyapp.helper.setupView
 import com.aad.storyapp.helper.visible
-import com.aad.storyapp.view.story.StoryActivity
+import com.aad.storyapp.view.story.ListStoryActivity
 import com.aad.storyapp.view.viewmodel.AuthViewModel
 import com.aad.storyapp.view.viewmodel.ViewModelFactory
 import kotlinx.coroutines.runBlocking
@@ -81,7 +81,7 @@ class LoginActivity : AppCompatActivity() {
                         authViewModel.saveSession(it.value.loginResult)
                     }
 
-                    val intent = Intent(this@LoginActivity, StoryActivity::class.java)
+                    val intent = Intent(this@LoginActivity, ListStoryActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                     startActivity(intent)
                     finish()

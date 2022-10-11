@@ -33,7 +33,7 @@ import com.google.gson.Gson
 import kotlinx.coroutines.runBlocking
 
 
-class StoryActivity : AppCompatActivity() {
+class ListStoryActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityStoryBinding
     private lateinit var storyViewModel: StoryViewModel
@@ -42,7 +42,7 @@ class StoryActivity : AppCompatActivity() {
     private var user: User? = null
 
     companion object {
-        private val TAG = StoryActivity::class.java.simpleName
+        private val TAG = ListStoryActivity::class.java.simpleName
         const val CREATE_STORY_RESULT = 100
     }
 
@@ -62,7 +62,7 @@ class StoryActivity : AppCompatActivity() {
     private fun setupAction() {
         binding.apply {
             fabCreateStory.setOnClickListener {
-                val intent = Intent(this@StoryActivity, CreateStoryActivity::class.java)
+                val intent = Intent(this@ListStoryActivity, CreateStoryActivity::class.java)
                 intent.putExtra("user", user)
                 launcherIntentCreateStory.launch(intent)
             }
@@ -91,7 +91,7 @@ class StoryActivity : AppCompatActivity() {
                 is ResponseStatus.Success -> {
                     val stories = it.value.listStory
                     if (stories.size < 0) {
-                        Toast.makeText(this@StoryActivity, getString(R.string.empty_data), Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@ListStoryActivity, getString(R.string.empty_data), Toast.LENGTH_SHORT).show()
                         return@observe
                     }
 
@@ -105,7 +105,7 @@ class StoryActivity : AppCompatActivity() {
                     updateAppWidget()
                 }
                 is ResponseStatus.Failure -> {
-                    Toast.makeText(this@StoryActivity, getString(R.string.fetch_data_failed, it.value?.message), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@ListStoryActivity, getString(R.string.fetch_data_failed, it.value?.message), Toast.LENGTH_SHORT).show()
                 }
                 else -> {
                     Log.d(TAG, "setupVieModel: Unknown ResponseStatus")
@@ -137,14 +137,14 @@ class StoryActivity : AppCompatActivity() {
                     val date = itemBinding.tvStoryDate
 
                     val optionsCompat: ActivityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                        this@StoryActivity,
+                        this@ListStoryActivity,
                         Pair(photo, "anim_story_profile"),
                         Pair(name, "anim_story_title"),
                         Pair(description, "anim_story_description"),
                         Pair(date, "anim_story_date"),
                     )
 
-                    val intent = Intent(this@StoryActivity, DetailStoryActivity::class.java)
+                    val intent = Intent(this@ListStoryActivity, DetailStoryActivity::class.java)
                     intent.putExtra("story", data)
                     startActivity(intent, optionsCompat.toBundle())
                 }
@@ -155,7 +155,7 @@ class StoryActivity : AppCompatActivity() {
     private fun setupStoriesRV() {
         with(binding) {
             rvStories.adapter = storyAdapter
-            rvStories.layoutManager = LinearLayoutManager(this@StoryActivity)
+            rvStories.layoutManager = LinearLayoutManager(this@ListStoryActivity)
             rvStories.setHasFixedSize(true)
         }
     }
@@ -165,6 +165,10 @@ class StoryActivity : AppCompatActivity() {
             menuInflater.inflate(R.menu.overflow_menu, menu)
             setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener {
                 when (it.itemId) {
+                    R.id.menu_act_map -> {
+                        startActivity(Intent(this@ListStoryActivity, MapsStoryActivity::class.java))
+                        return@OnMenuItemClickListener true
+                    }
                     R.id.menu_act_logout -> {
                         authViewModel.destroySession()
                         return@OnMenuItemClickListener true
@@ -195,7 +199,7 @@ class StoryActivity : AppCompatActivity() {
         val widgetManager = AppWidgetManager.getInstance(application)
         val ids = widgetManager.getAppWidgetIds(ComponentName(application, ImageBannerWidget::class.java))
         ImageBannerWidget().apply {
-            onUpdate(this@StoryActivity, AppWidgetManager.getInstance(this@StoryActivity), ids)
+            onUpdate(this@ListStoryActivity, AppWidgetManager.getInstance(this@ListStoryActivity), ids)
         }
     }
 }

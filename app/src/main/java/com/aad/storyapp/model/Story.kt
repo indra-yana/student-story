@@ -20,10 +20,10 @@ data class Story(
     val description: String,
     @SerializedName("id")
     val id: String,
-//    @SerializedName("lat")
-//    val lat: Double,
-//    @SerializedName("lon")
-//    val lon: Double,
+    @SerializedName("lat")
+    val lat: Double? = null,
+    @SerializedName("lon")
+    val lon: Double? = null,
     @SerializedName("name")
     val name: String,
     @SerializedName("photoUrl")

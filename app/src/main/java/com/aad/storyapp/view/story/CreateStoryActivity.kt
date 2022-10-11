@@ -34,7 +34,6 @@ import java.util.*
 
 class CreateStoryActivity : AppCompatActivity() {
 
-
     private lateinit var binding: ActivityCreateStoryBinding
     private lateinit var storyViewModel: StoryViewModel
 
@@ -145,7 +144,7 @@ class CreateStoryActivity : AppCompatActivity() {
 
                     val intent = Intent()
                     intent.putExtra("story", story)
-                    setResult(StoryActivity.CREATE_STORY_RESULT, intent)
+                    setResult(ListStoryActivity.CREATE_STORY_RESULT, intent)
                     finish()
 
                     Toast.makeText(this@CreateStoryActivity, it.value.message, Toast.LENGTH_SHORT).show()

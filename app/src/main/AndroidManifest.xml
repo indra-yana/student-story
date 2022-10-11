@@ -13,6 +13,9 @@
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="18" />
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+
     <queries>
         <intent>
             <action android:name="android.intent.action.VIEW" />
@@ -34,6 +37,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.StoryApp"
         tools:targetApi="31">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="${MAPS_API_KEY}" />
+
+        <activity
+            android:name=".view.story.MapsStoryActivity"
+            android:exported="false"
+            android:label="@string/title_activity_maps_story" />
 
         <receiver
             android:name=".widget.ImageBannerWidget"
@@ -61,7 +73,7 @@
             android:name=".view.story.CreateStoryActivity"
             android:exported="false" />
         <activity
-            android:name=".view.story.StoryActivity"
+            android:name=".view.story.ListStoryActivity"
             android:exported="false" />
         <activity
             android:name=".view.auth.RegisterActivity"

@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.aad.storyapp.R
 import com.aad.storyapp.helper.setupView
 import com.aad.storyapp.view.auth.LoginActivity
-import com.aad.storyapp.view.story.StoryActivity
+import com.aad.storyapp.view.story.ListStoryActivity
 import com.aad.storyapp.view.viewmodel.AuthViewModel
 import com.aad.storyapp.view.viewmodel.ViewModelFactory
 
@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
             if (user.token.isEmpty()) {
                 startActivity(Intent(this, LoginActivity::class.java))
             } else {
-                startActivity(Intent(this, StoryActivity::class.java))
+                startActivity(Intent(this, ListStoryActivity::class.java))
             }
 
             finish()
