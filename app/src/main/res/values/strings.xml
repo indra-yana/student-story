@@ -1,0 +1,55 @@
+<resources>
+    <string name="app_name">Student Story</string>
+
+    <string name="lorem_ipsum_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eget ligula eu lectus lobortis condimentum.</string>
+    <string name="title_lorem_ipsum">Lorem ipsum </string>
+
+    <string name="createdAtFormat">Created on %1$s</string>
+
+    <string name="label_name_hint">Name</string>
+    <string name="label_email_hint">Email</string>
+    <string name="label_password_hint">Password</string>
+    <string name="label_name_placeholder">Arnold Schwarzenegger</string>
+    <string name="label_email_placeholder">arnold@xyz.com</string>
+    <string name="label_password_placeholder">sup3r#s3cr3t</string>
+
+    <string name="label_story_description_hint">Description</string>
+    <string name="label_story_description_placeholder">My Awesome Story</string>
+
+    <string name="text_title_register">Register</string>
+    <string name="text_title_login">Login</string>
+    <string name="text_sign_up">Sign Up</string>
+    <string name="text_not_have_account">Don\'t have an account?</string>
+    <string name="text_already_have_account">Already have an account?</string>
+    <string name="text_create_new_story">New Story</string>
+    <string name="text_title_stories">Stories</string>
+    <string name="text_btn_save">Save</string>
+    <string name="text_upload_gallery">Gallery</string>
+    <string name="text_upload_camera">Camera</string>
+    <string name="text_act_logout">Logout</string>
+    <string name="text_act_language">Language</string>
+    <string name="text_btn_back">Back</string>
+
+    <string name="validation_name_required">Name is required</string>
+    <string name="validation_email_required">Email is required</string>
+    <string name="validation_password_required">Password is required</string>
+    <string name="validation_email_match">Please enter valid email address</string>
+    <string name="validation_description_required">Description is required</string>
+    <string name="validation_password_length">Password must 6 character length</string>
+    <string name="validation_image_required">"Please choose an image"</string>
+
+    <string name="fetch_data_failed">Failed to fetch data: %1$s</string>
+    <string name="validation_failed">Please fill all field correctly!</string>
+    <string name="login_successfully">Login successfully: %1$s</string>
+    <string name="login_failed">Login failed: %1$s</string>
+    <string name="register_successfully">Register successfully: %1$s</string>
+    <string name="register_failed">Register failed: %1$s</string>
+    <string name="create_story_failed">Failed to create story: %1$s</string>
+    <string name="an_error_occurred">An error occurred :(</string>
+
+    <string name="appwidget_text">STUDENT STORY</string>
+    <string name="add_widget">Add Widget</string>
+    <string name="app_widget_description">Student story widget banner</string>
+    <string name="empty_data">No data available!</string>
+
+</resources>

@@ -1,0 +1,55 @@
+<resources>
+    <string name="app_name">Student Story</string>
+
+    <string name="lorem_ipsum_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eget ligula eu lectus lobortis condimentum.</string>
+    <string name="title_lorem_ipsum">Lorem ipsum </string>
+
+    <string name="createdAtFormat">Dibuat pada %1$s</string>
+
+    <string name="label_name_hint">Nama</string>
+    <string name="label_email_hint">Email</string>
+    <string name="label_password_hint">Password</string>
+    <string name="label_name_placeholder">Arnold Schwarzenegger</string>
+    <string name="label_email_placeholder">arnold@xyz.com</string>
+    <string name="label_password_placeholder">sup3r#s3cr3t</string>
+
+    <string name="label_story_description_hint">Deskripsi</string>
+    <string name="label_story_description_placeholder">Cerita mengagumkan saya</string>
+
+    <string name="text_title_register">Register</string>
+    <string name="text_title_login">Login</string>
+    <string name="text_sign_up">Sign Up</string>
+    <string name="text_not_have_account">Belum memiliki akun?</string>
+    <string name="text_already_have_account">Sudah memiliki akun?</string>
+    <string name="text_create_new_story">Cerita Baru</string>
+    <string name="text_title_stories">Daftar Cerita</string>
+    <string name="text_btn_save">Simpan</string>
+    <string name="text_upload_gallery">Gallery</string>
+    <string name="text_upload_camera">Kamera</string>
+    <string name="text_act_logout">Logout</string>
+    <string name="text_act_language">Bahasa</string>
+    <string name="text_btn_back">Kembali</string>
+
+    <string name="validation_name_required">Nama Dibutuhkan</string>
+    <string name="validation_email_required">Email Dibutuhkan</string>
+    <string name="validation_password_required">Password Dibutuhkan</string>
+    <string name="validation_email_match">Harap masukan alamant email yang valid</string>
+    <string name="validation_description_required">Deskripsi dibutuhkan</string>
+    <string name="validation_password_length">Password setidaknya harus 6 karakter</string>
+    <string name="validation_image_required">Harap pilih gambar</string>
+
+    <string name="fetch_data_failed">Gagal mengambil data: %1$s</string>
+    <string name="validation_failed">Harap isi semua bidang dengan benar!</string>
+    <string name="login_successfully">Login berhasil: %1$s</string>
+    <string name="login_failed">Login gagal: %1$s</string>
+    <string name="register_successfully">Register berhasil: %1$s</string>
+    <string name="register_failed">Register gagal: %1$s</string>
+    <string name="create_story_failed">Gagal membuat story: %1$s</string>
+    <string name="an_error_occurred">Terjadi error yang tak terduga :(</string>
+
+    <string name="appwidget_text">STUDENT STORY</string>
+    <string name="add_widget">Add Widget</string>
+    <string name="app_widget_description">Student story widget banner</string>
+    <string name="empty_data">Data tidak tersedia!</string>
+
+</resources>
