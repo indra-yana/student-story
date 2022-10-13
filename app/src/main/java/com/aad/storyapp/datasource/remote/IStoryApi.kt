@@ -18,7 +18,9 @@ interface IStoryApi {
     @POST("stories")
     suspend fun create(
         @Part photo: MultipartBody.Part,
-        @Part("description") description: RequestBody
+        @Part("description") description: RequestBody,
+        @Part("lat") lat: RequestBody,
+        @Part("lon") lon: RequestBody
     ): ApiResponse
 
     @Multipart

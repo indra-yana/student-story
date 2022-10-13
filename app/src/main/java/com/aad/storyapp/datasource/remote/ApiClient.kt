@@ -1,15 +1,11 @@
 package com.aad.storyapp.datasource.remote
 
-import android.util.Log
-import androidx.core.content.ContextCompat
-import androidx.lifecycle.asLiveData
 import com.aad.storyapp.BaseApplication
 import com.aad.storyapp.BuildConfig
 import com.aad.storyapp.datasource.local.AppPreferences
 import com.aad.storyapp.helper.Constant
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

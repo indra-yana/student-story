@@ -6,9 +6,11 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
+import android.location.Geocoder
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
+import android.util.Log
 import android.view.View
 import android.view.Window
 import android.view.WindowInsets
@@ -17,6 +19,7 @@ import android.widget.ImageView
 import androidx.appcompat.app.ActionBar
 import androidx.core.content.ContextCompat
 import com.aad.storyapp.R
+import com.aad.storyapp.view.story.MapsStoryActivity
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import java.io.*
@@ -160,4 +163,21 @@ fun reduceFileImage(file: File): File {
     bitmap.compress(Bitmap.CompressFormat.JPEG, compressQuality, FileOutputStream(file))
 
     return file
+}
+
+fun getAddressName(context: Context, lat: Double, lon: Double): String? {
+    // Use real device
+    var addressName: String? = null
+    val geocoder = Geocoder(context, Locale.getDefault())
+    try {
+        val list = geocoder.getFromLocation(lat, lon, 1)
+        if (list != null && list.size != 0) {
+            addressName = list[0].getAddressLine(0)
+            Log.d(TAG, "getAddressName: $addressName")
+        }
+    } catch (e: Exception) {
+        e.printStackTrace()
+    }
+
+    return addressName
 }

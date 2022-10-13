@@ -5,7 +5,6 @@ import android.annotation.SuppressLint
 import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.content.res.Resources
-import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
 import android.util.Log
@@ -18,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.aad.storyapp.R
 import com.aad.storyapp.databinding.ActivityMapsStoryBinding
 import com.aad.storyapp.datasource.remote.response.ResponseStatus
+import com.aad.storyapp.helper.getAddressName
 import com.aad.storyapp.helper.setupView
 import com.aad.storyapp.helper.visible
 import com.aad.storyapp.model.Story
@@ -36,7 +36,6 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
-import java.util.*
 import java.util.concurrent.TimeUnit
 
 
@@ -179,7 +178,7 @@ class MapsStoryActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun markMyLocation(location: Location) {
         val latitude = location.latitude
         val longitude = location.longitude
-        val addressName = getAddressName(latitude, longitude)
+        val addressName = getAddressName(this@MapsStoryActivity, latitude, longitude)
         val myPoint = LatLng(latitude, longitude)
 
         mMap.addMarker(
@@ -199,7 +198,7 @@ class MapsStoryActivity : AppCompatActivity(), OnMapReadyCallback {
 
             if (latitude != null && longitude != null) {
                 val latLng = LatLng(latitude, longitude)
-                val addressName = getAddressName(latitude, longitude)
+                val addressName = getAddressName(this@MapsStoryActivity, latitude, longitude)
 
                 if (addressName != null) {
                     mMap.addMarker(
@@ -235,23 +234,6 @@ class MapsStoryActivity : AppCompatActivity(), OnMapReadyCallback {
         } catch (exception: Resources.NotFoundException) {
             Log.e(TAG, "Can't find style. Error: ", exception)
         }
-    }
-
-    private fun getAddressName(lat: Double, lon: Double): String? {
-        // Use real device
-        var addressName: String? = null
-        val geocoder = Geocoder(this@MapsStoryActivity, Locale.getDefault())
-        try {
-            val list = geocoder.getFromLocation(lat, lon, 1)
-            if (list != null && list.size != 0) {
-                addressName = list[0].getAddressLine(0)
-                Log.d(TAG, "getAddressName: $addressName")
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-
-        return addressName
     }
 
 }

@@ -31,6 +31,7 @@
                 android:layout_gravity="top|end"
                 android:layout_marginStart="@dimen/_2sdp"
                 android:layout_marginTop="-5dp"
+                android:elevation="@dimen/_9sdp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_bookmark_24dp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -38,19 +39,18 @@
                 app:tint="@color/color_accent"
                 tools:ignore="ContentDescription" />
 
-            <de.hdodenhof.circleimageview.CircleImageView
+            <com.makeramen.roundedimageview.RoundedImageView
                 android:id="@+id/iv_story_profile"
-                android:layout_width="@dimen/_80sdp"
-                android:layout_height="@dimen/_80sdp"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_90sdp"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:elevation="@dimen/_8sdp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/img_placeholder"
-                app:civ_border_color="@color/color_primary"
-                app:civ_border_width="@dimen/_1sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:riv_corner_radius="@dimen/_10sdp" />
 
             <TextView
                 android:id="@+id/tv_story_title"
@@ -61,7 +61,6 @@
                 android:ellipsize="end"
                 android:includeFontPadding="false"
                 android:maxLines="1"
-                android:textAlignment="center"
                 android:textColor="@color/color_dark"
                 android:textSize="@dimen/_16ssp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -78,10 +77,8 @@
                 android:ellipsize="end"
                 android:includeFontPadding="false"
                 android:maxLines="2"
-                android:textAlignment="center"
                 android:textColor="@color/color_dark"
                 android:textSize="@dimen/_12ssp"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_story_title"
                 tools:text="@string/lorem_ipsum_text" />
@@ -93,10 +90,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:ellipsize="end"
+                android:gravity="center_vertical"
                 android:maxLines="1"
-                android:textAlignment="textEnd"
                 android:textColor="@color/color_gray"
                 android:textSize="@dimen/_10sdp"
+                app:drawableStartCompat="@drawable/ic_round_time_24"
+                app:drawableTint="@color/color_primary"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_story_description"

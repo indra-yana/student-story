@@ -31,9 +31,9 @@ class StoryViewModel : BaseViewModel() {
     private var _storyList: ArrayList<Story> = arrayListOf()
     val storyList: MutableLiveData<ArrayList<Story>> = MutableLiveData()
 
-    fun create(photo: MultipartBody.Part, description: RequestBody) = viewModelScope.launch {
+    fun create(photo: MultipartBody.Part, description: RequestBody, lat: RequestBody, lon: RequestBody) = viewModelScope.launch {
         _storyCreateResponse.value = ResponseStatus.Loading
-        _storyCreateResponse.value = storyRepository.create(photo, description)
+        _storyCreateResponse.value = storyRepository.create(photo, description, lat, lon)
     }
 
     fun createAsGuest(photo: MultipartBody.Part, description: RequestBody) = viewModelScope.launch {

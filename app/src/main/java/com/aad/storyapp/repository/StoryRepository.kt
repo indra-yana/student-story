@@ -15,9 +15,9 @@ import okhttp3.RequestBody
 
 class StoryRepository : BaseRepository() {
 
-    suspend fun create(photo: MultipartBody.Part, description: RequestBody): ResponseStatus<ApiResponse> {
+    suspend fun create(photo: MultipartBody.Part, description: RequestBody, lat: RequestBody, lon: RequestBody): ResponseStatus<ApiResponse> {
         return safeApiCall(ApiResponse::class.java) {
-            storyApi.create(photo, description)
+            storyApi.create(photo, description, lat, lon)
         }
     }
 
