@@ -3,6 +3,9 @@ package com.aad.storyapp.view.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import androidx.paging.liveData
 import com.aad.storyapp.datasource.remote.response.ApiResponse
 import com.aad.storyapp.datasource.remote.response.ResponseStatus
 import com.aad.storyapp.datasource.remote.response.StoryResponse
@@ -26,6 +29,8 @@ class StoryViewModel : BaseViewModel() {
 
     private val _storiesResponse: MutableLiveData<ResponseStatus<StoryResponse>> = MutableLiveData()
     val storiesResponse: LiveData<ResponseStatus<StoryResponse>> get() = _storiesResponse
+
+    val storiesResponsePager: LiveData<PagingData<Story>> = storyRepository.storiesWithPagination().cachedIn(viewModelScope)
 
     // Keep data alive
     private var _storyList: ArrayList<Story> = arrayListOf()

@@ -1,8 +1,14 @@
 package com.aad.storyapp.repository
 
+import androidx.lifecycle.LiveData
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.liveData
 import com.aad.storyapp.datasource.remote.response.ApiResponse
 import com.aad.storyapp.datasource.remote.response.ResponseStatus
 import com.aad.storyapp.datasource.remote.response.StoryResponse
+import com.aad.storyapp.model.Story
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
@@ -31,6 +37,19 @@ class StoryRepository : BaseRepository() {
         return safeApiCall(StoryResponse::class.java) {
             storyApi.stories(page, size, location)
         }
+    }
+
+    fun storiesWithPagination(): LiveData<PagingData<Story>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 2,
+                initialLoadSize = 10,
+                enablePlaceholders = false
+            ),
+            pagingSourceFactory = {
+                StoryPagingSource()
+            }
+        ).liveData
     }
 
     suspend fun saveStories(stories: String) {

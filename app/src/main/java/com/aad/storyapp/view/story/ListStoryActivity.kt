@@ -5,7 +5,6 @@ import android.content.ComponentName
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -14,23 +13,23 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
 import androidx.lifecycle.ViewModelProvider
+import androidx.paging.LoadState
+import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aad.storyapp.R
 import com.aad.storyapp.databinding.ActivityStoryBinding
-import com.aad.storyapp.datasource.remote.response.ResponseStatus
 import com.aad.storyapp.helper.setupView
 import com.aad.storyapp.helper.visible
 import com.aad.storyapp.listener.IOnItemClickListener
 import com.aad.storyapp.model.Story
 import com.aad.storyapp.model.User
+import com.aad.storyapp.view.adapter.LoadingStateAdapter
 import com.aad.storyapp.view.adapter.StoryAdapter
 import com.aad.storyapp.view.auth.LoginActivity
 import com.aad.storyapp.view.viewmodel.AuthViewModel
 import com.aad.storyapp.view.viewmodel.StoryViewModel
 import com.aad.storyapp.view.viewmodel.ViewModelFactory
 import com.aad.storyapp.widget.ImageBannerWidget
-import com.google.gson.Gson
-import kotlinx.coroutines.runBlocking
 
 
 class ListStoryActivity : AppCompatActivity() {
@@ -77,43 +76,9 @@ class ListStoryActivity : AppCompatActivity() {
         storyViewModel = ViewModelProvider(this, ViewModelFactory())[StoryViewModel::class.java]
         authViewModel = ViewModelProvider(this, ViewModelFactory())[AuthViewModel::class.java]
 
-        storyViewModel.storiesResponse.observe(this) {
-
-            with(binding) {
-                pbLoading.visible(it is ResponseStatus.Loading)
-                rvStories.visible(it !is ResponseStatus.Loading)
-            }
-
-            when (it) {
-                is ResponseStatus.Loading -> {
-                    // TODO: Handle loading state
-                }
-                is ResponseStatus.Success -> {
-                    val stories = it.value.listStory
-                    if (stories.size < 0) {
-                        Toast.makeText(this@ListStoryActivity, getString(R.string.empty_data), Toast.LENGTH_SHORT).show()
-                        return@observe
-                    }
-
-                    storyAdapter.addList(stories)
-
-                    // Save stories result to display on app widget
-                    val jsString = Gson().toJson(stories)
-                    runBlocking {
-                        storyViewModel.saveStories(jsString)
-                    }
-                    updateAppWidget()
-                }
-                is ResponseStatus.Failure -> {
-                    Toast.makeText(this@ListStoryActivity, getString(R.string.fetch_data_failed, it.value?.message), Toast.LENGTH_SHORT).show()
-                }
-                else -> {
-                    Log.d(TAG, "setupVieModel: Unknown ResponseStatus")
-                }
-            }
+        storyViewModel.storiesResponsePager.observe(this) {
+            storyAdapter.submitData(lifecycle, it)
         }
-
-        storyViewModel.stories()
 
         authViewModel.session.observe(this) { user ->
             if (user.token.isEmpty()) {
@@ -150,11 +115,32 @@ class ListStoryActivity : AppCompatActivity() {
                 }
             }
         }
+
+        storyAdapter.addLoadStateListener { loadState ->
+            // show empty list
+            if (loadState.refresh is LoadState.Loading || loadState.append is LoadState.Loading) {
+                binding.pbLoading.visible(true)
+            } else {
+                binding.pbLoading.visible(false)
+                // If we have an error, show a toast
+                val errorState = when {
+                    loadState.append is LoadState.Error -> loadState.append as LoadState.Error
+                    loadState.prepend is LoadState.Error -> loadState.prepend as LoadState.Error
+                    loadState.refresh is LoadState.Error -> loadState.refresh as LoadState.Error
+                    else -> null
+                }
+                errorState?.let {
+                    Toast.makeText(this@ListStoryActivity, it.error.toString(), Toast.LENGTH_LONG).show()
+                }
+            }
+        }
     }
 
     private fun setupStoriesRV() {
         with(binding) {
-            rvStories.adapter = storyAdapter
+            rvStories.adapter = storyAdapter.withLoadStateFooter(
+                footer = LoadingStateAdapter { storyAdapter.retry() }
+            )
             rvStories.layoutManager = LinearLayoutManager(this@ListStoryActivity)
             rvStories.setHasFixedSize(true)
         }
@@ -189,7 +175,9 @@ class ListStoryActivity : AppCompatActivity() {
             val story = it.data?.getParcelableExtra<Story>("story")
 
             if (story != null) {
-                storyAdapter.addData(story)
+                // TODO: Check this
+                // storyAdapter.addData(story)
+                storyAdapter.submitData(lifecycle, PagingData.from(listOf(story)))
                 binding.rvStories.smoothScrollToPosition(0)
             }
         }

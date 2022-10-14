@@ -2,12 +2,11 @@ package com.aad.storyapp.view.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
+import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.DiffUtil
 import com.aad.storyapp.databinding.ItemStoryBinding
-import com.aad.storyapp.helper.addAllFiltered
 import com.aad.storyapp.listener.IOnItemClickListener
 import com.aad.storyapp.model.Story
-import com.aad.storyapp.view.adapter.viewholder.BaseViewHolder
 import com.aad.storyapp.view.adapter.viewholder.StoryViewHolder
 
 /****************************************************
@@ -17,33 +16,31 @@ import com.aad.storyapp.view.adapter.viewholder.StoryViewHolder
  * Github: https://github.com/indra-yana
  ****************************************************/
 
-class StoryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class StoryAdapter : PagingDataAdapter<Story, StoryViewHolder>(DIFF_CALLBACK) {
 
-    private var itemList: ArrayList<Story> = arrayListOf()
     var iOnItemClickListener: IOnItemClickListener? = null
     lateinit var itemBinding: ItemStoryBinding
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StoryViewHolder {
         itemBinding = ItemStoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return StoryViewHolder(itemBinding)
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as BaseViewHolder).apply {
-            bindItem(itemList[position], iOnItemClickListener)
+    override fun onBindViewHolder(holder: StoryViewHolder, position: Int) {
+        val data = getItem(position) as Story
+
+        holder.bindItem(data, iOnItemClickListener)
+    }
+
+    companion object {
+        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Story>() {
+            override fun areItemsTheSame(oldItem: Story, newItem: Story): Boolean {
+                return oldItem == newItem
+            }
+
+            override fun areContentsTheSame(oldItem: Story, newItem: Story): Boolean {
+                return oldItem.id == newItem.id
+            }
         }
-    }
-
-    override fun getItemCount(): Int = itemList.count()
-
-    fun addList(itemList: ArrayList<Story>) {
-        val oldCount: Int = itemCount
-        this.itemList.addAllFiltered(itemList)
-        notifyItemRangeInserted(oldCount, itemCount)
-    }
-
-    fun addData(story: Story) {
-        this.itemList.add(0, story)
-        notifyItemInserted(0)
     }
 }

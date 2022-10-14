@@ -54,5 +54,7 @@
     <string name="text_act_map_stories">Map Stories</string>
     <string name="title_activity_maps_story">MapsStoryActivity</string>
     <string name="start_point">My Point</string>
+    <string name="retry">Coba Lagi</string>
+    <string name="fetching_data">Fetching data....</string>
 
 </resources>
