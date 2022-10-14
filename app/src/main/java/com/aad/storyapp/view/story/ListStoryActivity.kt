@@ -176,8 +176,11 @@ class ListStoryActivity : AppCompatActivity() {
 
             if (story != null) {
                 // TODO: Check this
-                // storyAdapter.addData(story)
-                storyAdapter.submitData(lifecycle, PagingData.from(listOf(story)))
+                // storyAdapter.submitData(lifecycle, PagingData.from(listOf(story)))
+                storyAdapter.snapshot().items.toMutableList().add(0, story)
+                storyAdapter.notifyItemInserted(0)
+                storyAdapter.refresh()
+
                 binding.rvStories.smoothScrollToPosition(0)
             }
         }
