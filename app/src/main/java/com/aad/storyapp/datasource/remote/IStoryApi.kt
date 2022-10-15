@@ -23,13 +23,6 @@ interface IStoryApi {
         @Part("lon") lon: RequestBody
     ): ApiResponse
 
-    @Multipart
-    @POST("stories/guest")
-    suspend fun createAsGuest(
-        @Part photo: MultipartBody.Part,
-        @Part("description") description: RequestBody
-    ): ApiResponse
-
     @GET("stories")
     suspend fun stories(
         @Query("page") page: Int = 1,

@@ -24,12 +24,6 @@ class StoryRepository : BaseRepository() {
         }
     }
 
-    suspend fun createAsGuest(photo: MultipartBody.Part, description: RequestBody): ResponseStatus<ApiResponse> {
-        return safeApiCall(ApiResponse::class.java) {
-            storyApi.createAsGuest(photo, description)
-        }
-    }
-
     suspend fun stories(page: Int = 1, size: Int = 10, location: Int = 0): ResponseStatus<StoryResponse> {
         return safeApiCall(StoryResponse::class.java) {
             storyApi.stories(page, size, location)

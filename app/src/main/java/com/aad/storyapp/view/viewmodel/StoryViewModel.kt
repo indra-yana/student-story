@@ -35,11 +35,6 @@ class StoryViewModel : BaseViewModel() {
         _storyCreateResponse.value = storyRepository.create(photo, description, lat, lon)
     }
 
-    fun createAsGuest(photo: MultipartBody.Part, description: RequestBody) = viewModelScope.launch {
-        _storyCreateResponse.value = ResponseStatus.Loading
-        _storyCreateResponse.value = storyRepository.createAsGuest(photo, description)
-    }
-
     fun stories(page: Int = 1, size: Int = 10, location: Int = 0) = viewModelScope.launch {
         _storiesResponse.value = ResponseStatus.Loading
         _storiesResponse.value = storyRepository.stories(page, size, location)
