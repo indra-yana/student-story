@@ -9,12 +9,13 @@ import android.widget.RemoteViewsService
 import androidx.core.os.bundleOf
 import com.aad.storyapp.BaseApplication
 import com.aad.storyapp.R
+import com.aad.storyapp.datasource.local.AppDatabase
 import com.aad.storyapp.datasource.local.AppPreferences
+import com.aad.storyapp.helper.DataClassMapper
 import com.aad.storyapp.helper.rotateBitmap
 import com.aad.storyapp.model.Story
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.FutureTarget
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 
 
@@ -28,8 +29,9 @@ import kotlinx.coroutines.runBlocking
 class StackRemoteViewsFactory(private val mContext: Context) : RemoteViewsService.RemoteViewsFactory {
 
     private val TAG = this::class.java.simpleName
-    private lateinit var mStories: ArrayList<Story>
+    private lateinit var mStories: List<Story>
     private val preferences: AppPreferences by lazy { BaseApplication.pref }
+    private val database: AppDatabase by lazy { BaseApplication.db }
 
     override fun onCreate() {
         Log.d(TAG, "onCreate: Widget created!")
@@ -38,7 +40,8 @@ class StackRemoteViewsFactory(private val mContext: Context) : RemoteViewsServic
     override fun onDataSetChanged() {
         Log.d(TAG, "onDataSetChanged: Widget data set changed!")
         runBlocking {
-            mStories = preferences.getStories().first() ?: arrayListOf()
+//            mStories = preferences.getStories().first() ?: arrayListOf()
+            mStories = DataClassMapper.mapStoryEntityToStoryModel(database.storyDao().getAllStoryAsList(15, 1 * 15))
         }
     }
 
@@ -50,7 +53,7 @@ class StackRemoteViewsFactory(private val mContext: Context) : RemoteViewsServic
 
     override fun getViewAt(position: Int): RemoteViews {
         val rv = RemoteViews(mContext.packageName, R.layout.widget_item)
-        if (mStories.size > 0) {
+        if (mStories.isNotEmpty()) {
             val futureTarget: FutureTarget<Bitmap> = Glide.with(mContext)
                 .asBitmap()
                 .load(mStories[position].photoUrl)

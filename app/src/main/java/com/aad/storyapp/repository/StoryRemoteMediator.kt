@@ -1,11 +1,15 @@
 package com.aad.storyapp.repository
 
-import androidx.paging.*
+import androidx.paging.ExperimentalPagingApi
+import androidx.paging.LoadType
+import androidx.paging.PagingState
+import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
 import com.aad.storyapp.BaseApplication
 import com.aad.storyapp.datasource.local.AppDatabase
 import com.aad.storyapp.datasource.local.entities.RemoteKeys
 import com.aad.storyapp.datasource.remote.IStoryApi
+import com.aad.storyapp.helper.DataClassMapper.mapStoryModelToStoryEntity
 import com.aad.storyapp.model.Story
 
 /****************************************************
@@ -60,18 +64,7 @@ class StoryRemoteMediator() : RemoteMediator<Int, Story>() {
                     RemoteKeys(id = it.id, prevKey = prevKey, nextKey = nextKey)
                 }
 
-                val storyEntities = responseData.map {
-                    com.aad.storyapp.datasource.local.entities.Story(
-                        id = it.id,
-                        name = it.name,
-                        photoUrl = it.photoUrl,
-                        description = it.description,
-                        createdAt = it.createdAt,
-                        lat = it.lat,
-                        lon = it.lon
-                    )
-                }
-
+                val storyEntities = mapStoryModelToStoryEntity(responseData)
                 database.remoteKeysDao().insertAll(keys)
                 database.storyDao().insertStory(storyEntities)
             }

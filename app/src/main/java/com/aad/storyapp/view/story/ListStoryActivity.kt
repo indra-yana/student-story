@@ -138,8 +138,8 @@ class ListStoryActivity : AppCompatActivity() {
 //                CoroutineScope(Dispatchers.IO).launch {
 //                    val jsString = Gson().toJson(storyAdapter.snapshot())
 //                    storyViewModel.saveStories(jsString)
-//                    updateAppWidget()
 //                }
+//                updateAppWidget()
             }
         }
 

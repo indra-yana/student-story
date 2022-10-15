@@ -23,4 +23,18 @@ object DataClassMapper {
         }
     }
 
+    fun mapStoryModelToStoryEntity(data: List<com.aad.storyapp.model.Story>): List<com.aad.storyapp.datasource.local.entities.Story> {
+        return data.map {
+            com.aad.storyapp.datasource.local.entities.Story(
+                id = it.id,
+                name = it.name,
+                photoUrl = it.photoUrl,
+                description = it.description,
+                createdAt = it.createdAt,
+                lat = it.lat,
+                lon = it.lon
+            )
+        }
+    }
+
 }
