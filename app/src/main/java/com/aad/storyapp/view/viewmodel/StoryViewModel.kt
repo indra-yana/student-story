@@ -45,7 +45,7 @@ class StoryViewModel : BaseViewModel() {
         _storiesResponse.value = storyRepository.stories(page, size, location)
     }
 
-    suspend fun saveStories(stories: String) {
+    fun saveStories(stories: String) = viewModelScope.launch {
         storyRepository.saveStories(stories)
     }
 }

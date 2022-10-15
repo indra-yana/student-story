@@ -11,7 +11,7 @@ import com.aad.storyapp.datasource.local.entities.Story
 
 @Database(
     entities = [Story::class, RemoteKeys::class],
-    version = 2,
+    version = 1,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -26,7 +26,7 @@ abstract class AppDatabase : RoomDatabase() {
         @JvmStatic
         fun getDatabase(context: Context): AppDatabase {
             return INSTANCE ?: synchronized(this) {
-                INSTANCE ?: Room.databaseBuilder(context, AppDatabase::class.java, "quote_database")
+                INSTANCE ?: Room.databaseBuilder(context.applicationContext, AppDatabase::class.java, "story_database")
                     .fallbackToDestructiveMigration()
                     .build()
                     .also { INSTANCE = it }

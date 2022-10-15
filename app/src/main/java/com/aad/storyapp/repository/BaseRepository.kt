@@ -1,6 +1,7 @@
 package com.aad.storyapp.repository
 
 import com.aad.storyapp.BaseApplication
+import com.aad.storyapp.datasource.local.AppDatabase
 import com.aad.storyapp.datasource.local.AppPreferences
 import com.aad.storyapp.datasource.remote.IAuthApi
 import com.aad.storyapp.datasource.remote.IStoryApi
@@ -22,6 +23,7 @@ abstract class BaseRepository {
     protected val authApi: IAuthApi by lazy { BaseApplication.authApi }
     protected val storyApi: IStoryApi by lazy { BaseApplication.storyApi }
     protected val preferences: AppPreferences by lazy { BaseApplication.pref }
+    protected val database: AppDatabase by lazy { BaseApplication.db }
 
     suspend fun <T> safeApiCall(clazz: Class<T>, apiCall: suspend () -> T): ResponseStatus<T> {
         return withContext(Dispatchers.IO) {

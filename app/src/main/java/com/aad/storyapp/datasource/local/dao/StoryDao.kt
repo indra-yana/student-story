@@ -20,7 +20,10 @@ interface StoryDao {
     suspend fun insertStory(quote: List<Story>)
 
     @Query("SELECT * FROM stories")
-    fun getAllStory(): PagingSource<Int, Story>
+    fun getAllStory(): PagingSource<Int, com.aad.storyapp.model.Story>
+
+    @Query("SELECT * FROM stories ORDER BY id ASC LIMIT :limit OFFSET :offset")
+    fun getAllStoryAsList(limit: Int, offset: Int): List<Story>
 
     @Query("DELETE FROM stories")
     suspend fun deleteAll()

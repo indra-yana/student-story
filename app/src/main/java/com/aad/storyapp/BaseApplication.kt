@@ -24,7 +24,7 @@ class BaseApplication : Application() {
         authApi = ApiClient.initApi(IAuthApi::class.java)
         storyApi = ApiClient.initApi(IStoryApi::class.java)
         pref = AppPreferences.initPreferences(dataStore)
-        db = AppDatabase.getDatabase(applicationContext)
+        db = AppDatabase.getDatabase(this)
         authRepository = AuthRepository()
         storyRepository = StoryRepository()
     }

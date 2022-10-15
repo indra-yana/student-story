@@ -1,10 +1,7 @@
 package com.aad.storyapp.repository
 
 import androidx.lifecycle.LiveData
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
-import androidx.paging.liveData
+import androidx.paging.*
 import com.aad.storyapp.datasource.remote.response.ApiResponse
 import com.aad.storyapp.datasource.remote.response.ResponseStatus
 import com.aad.storyapp.datasource.remote.response.StoryResponse
@@ -39,15 +36,17 @@ class StoryRepository : BaseRepository() {
         }
     }
 
+    @OptIn(ExperimentalPagingApi::class)
     fun storiesWithPagination(): LiveData<PagingData<Story>> {
         return Pager(
             config = PagingConfig(
-                pageSize = 2,
-                initialLoadSize = 10,
-                enablePlaceholders = false
+                pageSize = 5
             ),
+            remoteMediator = StoryRemoteMediator(),
             pagingSourceFactory = {
-                StoryPagingSource()
+                // StoryPagingSource()
+                // StoryRemoteMediatorPagingSource()
+                database.storyDao().getAllStory()
             }
         ).liveData
     }

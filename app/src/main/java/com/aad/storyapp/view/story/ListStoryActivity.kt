@@ -13,7 +13,6 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aad.storyapp.R
@@ -30,8 +29,6 @@ import com.aad.storyapp.view.viewmodel.AuthViewModel
 import com.aad.storyapp.view.viewmodel.StoryViewModel
 import com.aad.storyapp.view.viewmodel.ViewModelFactory
 import com.aad.storyapp.widget.ImageBannerWidget
-import com.google.gson.Gson
-import kotlinx.coroutines.launch
 
 
 class ListStoryActivity : AppCompatActivity() {
@@ -138,11 +135,11 @@ class ListStoryActivity : AppCompatActivity() {
 
             addOnPagesUpdatedListener {
                 // Save stories result to display on app widget
-                val jsString = Gson().toJson(storyAdapter.snapshot())
-                lifecycleScope.launch {
-                    storyViewModel.saveStories(jsString)
-                    updateAppWidget()
-                }
+//                CoroutineScope(Dispatchers.IO).launch {
+//                    val jsString = Gson().toJson(storyAdapter.snapshot())
+//                    storyViewModel.saveStories(jsString)
+//                    updateAppWidget()
+//                }
             }
         }
 
