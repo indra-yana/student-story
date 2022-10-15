@@ -1,6 +1,7 @@
 package com.aad.storyapp
 
 import android.app.Application
+import com.aad.storyapp.datasource.local.AppDatabase
 import com.aad.storyapp.datasource.local.AppPreferences
 import com.aad.storyapp.datasource.local.dataStore
 import com.aad.storyapp.datasource.remote.ApiClient
@@ -23,6 +24,7 @@ class BaseApplication : Application() {
         authApi = ApiClient.initApi(IAuthApi::class.java)
         storyApi = ApiClient.initApi(IStoryApi::class.java)
         pref = AppPreferences.initPreferences(dataStore)
+        db = AppDatabase.getDatabase(applicationContext)
         authRepository = AuthRepository()
         storyRepository = StoryRepository()
     }
@@ -36,6 +38,9 @@ class BaseApplication : Application() {
 
         @JvmStatic
         lateinit var pref: AppPreferences
+
+        @JvmStatic
+        lateinit var db: AppDatabase
 
         @JvmStatic
         lateinit var authRepository: AuthRepository

@@ -4,6 +4,7 @@ plugins {
     id 'kotlin-parcelize'
     id 'androidx.navigation.safeargs'
     id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -31,9 +32,7 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
-    }
-    viewBinding {
-        enabled = true
+        freeCompilerArgs += ["-Xopt-in=kotlin.RequiresOptIn"]
     }
     buildFeatures {
         viewBinding true
@@ -100,7 +99,15 @@ dependencies {
     implementation 'com.google.android.gms:play-services-maps:18.1.0'
     implementation 'com.google.android.gms:play-services-location:18.0.0'
 
+    // Room
+    implementation 'androidx.room:room-ktx:2.4.0-rc01'
+    kapt 'androidx.room:room-compiler:2.4.0-rc01'
+
+    // Activity
+    implementation 'androidx.activity:activity-ktx:1.4.0'
+
     // Paging
     implementation "androidx.paging:paging-runtime-ktx:3.1.1"
     implementation 'androidx.room:room-paging:2.4.0-rc01'
+
 }
