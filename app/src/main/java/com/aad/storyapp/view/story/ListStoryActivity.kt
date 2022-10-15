@@ -13,8 +13,8 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
-import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aad.storyapp.R
 import com.aad.storyapp.databinding.ActivityStoryBinding
@@ -30,6 +30,8 @@ import com.aad.storyapp.view.viewmodel.AuthViewModel
 import com.aad.storyapp.view.viewmodel.StoryViewModel
 import com.aad.storyapp.view.viewmodel.ViewModelFactory
 import com.aad.storyapp.widget.ImageBannerWidget
+import com.google.gson.Gson
+import kotlinx.coroutines.launch
 
 
 class ListStoryActivity : AppCompatActivity() {
@@ -114,26 +116,36 @@ class ListStoryActivity : AppCompatActivity() {
                     startActivity(intent, optionsCompat.toBundle())
                 }
             }
-        }
 
-        storyAdapter.addLoadStateListener { loadState ->
-            // show empty list
-            if (loadState.refresh is LoadState.Loading || loadState.append is LoadState.Loading) {
-                binding.pbLoading.visible(true)
-            } else {
-                binding.pbLoading.visible(false)
-                // If we have an error, show a toast
-                val errorState = when {
-                    loadState.append is LoadState.Error -> loadState.append as LoadState.Error
-                    loadState.prepend is LoadState.Error -> loadState.prepend as LoadState.Error
-                    loadState.refresh is LoadState.Error -> loadState.refresh as LoadState.Error
-                    else -> null
+            addLoadStateListener { loadState ->
+                // show empty list
+                if (loadState.refresh is LoadState.Loading || loadState.append is LoadState.Loading) {
+                    binding.pbLoading.visible(true)
+                } else {
+                    binding.pbLoading.visible(false)
+                    // If we have an error, show a toast
+                    val errorState = when {
+                        loadState.append is LoadState.Error -> loadState.append as LoadState.Error
+                        loadState.prepend is LoadState.Error -> loadState.prepend as LoadState.Error
+                        loadState.refresh is LoadState.Error -> loadState.refresh as LoadState.Error
+                        else -> null
+                    }
+                    errorState?.let {
+                        Toast.makeText(this@ListStoryActivity, it.error.toString(), Toast.LENGTH_LONG).show()
+                    }
                 }
-                errorState?.let {
-                    Toast.makeText(this@ListStoryActivity, it.error.toString(), Toast.LENGTH_LONG).show()
+            }
+
+            addOnPagesUpdatedListener {
+                // Save stories result to display on app widget
+                val jsString = Gson().toJson(storyAdapter.snapshot())
+                lifecycleScope.launch {
+                    storyViewModel.saveStories(jsString)
+                    updateAppWidget()
                 }
             }
         }
+
     }
 
     private fun setupStoriesRV() {

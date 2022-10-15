@@ -17,7 +17,7 @@ import com.aad.storyapp.view.adapter.viewholder.LoadingStateViewHolder
 class LoadingStateAdapter(private val retry: () -> Unit) : LoadStateAdapter<LoadingStateViewHolder>() {
 
     override fun onBindViewHolder(holder: LoadingStateViewHolder, loadState: LoadState) {
-        holder.bind(loadState)
+        holder.bindItem(loadState, null)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, loadState: LoadState): LoadingStateViewHolder {

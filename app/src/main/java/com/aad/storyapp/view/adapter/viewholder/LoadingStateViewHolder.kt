@@ -2,8 +2,8 @@ package com.aad.storyapp.view.adapter.viewholder
 
 import androidx.core.view.isVisible
 import androidx.paging.LoadState
-import androidx.recyclerview.widget.RecyclerView
 import com.aad.storyapp.databinding.ItemLoadingBinding
+import com.aad.storyapp.listener.IOnItemClickListener
 
 /****************************************************
  * Created by Indra Muliana
@@ -12,13 +12,15 @@ import com.aad.storyapp.databinding.ItemLoadingBinding
  * Github: https://github.com/indra-yana
  ****************************************************/
 
-class LoadingStateViewHolder(private val binding: ItemLoadingBinding, retry: () -> Unit) : RecyclerView.ViewHolder(binding.root) {
+class LoadingStateViewHolder(private val binding: ItemLoadingBinding, retry: () -> Unit) : BaseViewHolder(binding.root) {
 
     init {
         binding.retryButton.setOnClickListener { retry.invoke() }
     }
 
-    fun bind(loadState: LoadState) {
+    override fun bindItem(data: Any, listener: IOnItemClickListener?) {
+        val loadState = data as LoadState
+
         if (loadState is LoadState.Error) {
             binding.errorMsg.text = loadState.error.localizedMessage
         }

@@ -5,11 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import androidx.paging.liveData
 import com.aad.storyapp.datasource.remote.response.ApiResponse
 import com.aad.storyapp.datasource.remote.response.ResponseStatus
 import com.aad.storyapp.datasource.remote.response.StoryResponse
-import com.aad.storyapp.helper.addAllFiltered
 import com.aad.storyapp.model.Story
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
@@ -32,10 +30,6 @@ class StoryViewModel : BaseViewModel() {
 
     val storiesResponsePager: LiveData<PagingData<Story>> = storyRepository.storiesWithPagination().cachedIn(viewModelScope)
 
-    // Keep data alive
-    private var _storyList: ArrayList<Story> = arrayListOf()
-    val storyList: MutableLiveData<ArrayList<Story>> = MutableLiveData()
-
     fun create(photo: MultipartBody.Part, description: RequestBody, lat: RequestBody, lon: RequestBody) = viewModelScope.launch {
         _storyCreateResponse.value = ResponseStatus.Loading
         _storyCreateResponse.value = storyRepository.create(photo, description, lat, lon)
@@ -49,12 +43,6 @@ class StoryViewModel : BaseViewModel() {
     fun stories(page: Int = 1, size: Int = 10, location: Int = 0) = viewModelScope.launch {
         _storiesResponse.value = ResponseStatus.Loading
         _storiesResponse.value = storyRepository.stories(page, size, location)
-    }
-
-    fun addStories(itemList: ArrayList<Story>) {
-        storyList.value = _storyList.apply {
-            addAllFiltered(itemList)
-        }
     }
 
     suspend fun saveStories(stories: String) {
