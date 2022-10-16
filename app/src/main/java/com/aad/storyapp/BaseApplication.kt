@@ -7,8 +7,11 @@ import com.aad.storyapp.datasource.local.dataStore
 import com.aad.storyapp.datasource.remote.ApiClient
 import com.aad.storyapp.datasource.remote.IAuthApi
 import com.aad.storyapp.datasource.remote.IStoryApi
+import com.aad.storyapp.di.appModule
 import com.aad.storyapp.repository.AuthRepository
 import com.aad.storyapp.repository.StoryRepository
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
 
 /****************************************************
  * Created by Indra Muliana
@@ -20,6 +23,20 @@ import com.aad.storyapp.repository.StoryRepository
 class BaseApplication : Application() {
     override fun onCreate() {
         super.onCreate()
+
+//        authApi = ApiClient.initApi(IAuthApi::class.java)
+//        storyApi = ApiClient.initApi(IStoryApi::class.java)
+//        pref = AppPreferences.initPreferences(dataStore)
+//        db = AppDatabase.getDatabase(this)
+//        authRepository = AuthRepository()
+//        storyRepository = StoryRepository()
+    }
+
+    init {
+        startKoin {
+            androidContext(this@BaseApplication)
+            modules(listOf(appModule))
+        }
 
         authApi = ApiClient.initApi(IAuthApi::class.java)
         storyApi = ApiClient.initApi(IStoryApi::class.java)
