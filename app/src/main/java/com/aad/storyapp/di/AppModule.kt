@@ -1,14 +1,21 @@
 package com.aad.storyapp.di
 
 import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.core.handlers.ReplaceFileCorruptionHandler
+import androidx.datastore.preferences.SharedPreferencesMigration
+import androidx.datastore.preferences.core.PreferenceDataStoreFactory
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.emptyPreferences
+import androidx.datastore.preferences.preferencesDataStoreFile
 import com.aad.storyapp.datasource.local.AppDatabase
 import com.aad.storyapp.datasource.local.AppPreferences
-import com.aad.storyapp.datasource.local.dataStore
 import com.aad.storyapp.datasource.remote.ApiClient
 import com.aad.storyapp.datasource.remote.IAuthApi
 import com.aad.storyapp.datasource.remote.IStoryApi
-import com.aad.storyapp.repository.AuthRepository
-import com.aad.storyapp.repository.StoryRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
@@ -27,27 +34,30 @@ fun provideStoryApi(): IStoryApi {
     return ApiClient.initApi(IStoryApi::class.java)
 }
 
-fun provideStoryRepository(): StoryRepository {
-    return StoryRepository()
-}
-
-fun provideAuthRepository(): AuthRepository {
-    return AuthRepository()
-}
-
 fun providePreferences(context: Context): AppPreferences {
-    return AppPreferences.initPreferences(context.dataStore)
+    return AppPreferences(context)
 }
 
 fun provideDatabase(context: Context): AppDatabase {
     return AppDatabase.getDatabase(context.applicationContext)
 }
 
+fun providePreferencesDataStore(appContext: Context): DataStore<Preferences> {
+    return PreferenceDataStoreFactory.create(
+        corruptionHandler = ReplaceFileCorruptionHandler(
+            produceNewData = { emptyPreferences() }
+        ),
+        migrations = listOf(SharedPreferencesMigration(appContext, "setting")),
+        scope = CoroutineScope(Dispatchers.IO + SupervisorJob()),
+        produceFile = { appContext.preferencesDataStoreFile("setting") }
+    )
+}
+
+
 val appModule = module {
     single { provideAuthApi() }
     single { provideStoryApi() }
-    single { provideStoryRepository() }
-    single { provideAuthRepository() }
-    factory { providePreferences(androidContext()) }
-    factory { provideDatabase(androidContext()) }
+    single { providePreferences(androidContext()) }
+    single { provideDatabase(androidContext()) }
+    single { providePreferencesDataStore(androidContext()) }
 }

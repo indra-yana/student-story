@@ -20,12 +20,13 @@ import kotlinx.coroutines.flow.map
  * Github: https://github.com/indra-yana
  ****************************************************/
 
-val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "setting")
 
-class AppPreferences(private val dataStore: DataStore<Preferences>) {
+class AppPreferences(private val context: Context) {
+
+    private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "setting")
 
     suspend fun saveSession(user: User) {
-        dataStore.edit { preferences ->
+        context.dataStore.edit { preferences ->
             preferences[ID_KEY] = user.id
             preferences[NAME_KEY] = user.name
         }
@@ -34,7 +35,7 @@ class AppPreferences(private val dataStore: DataStore<Preferences>) {
     }
 
     suspend fun destroySession() {
-        dataStore.edit { preferences ->
+        context.dataStore.edit { preferences ->
             preferences.remove(TOKEN)
             preferences.remove(ID_KEY)
             preferences.remove(NAME_KEY)
@@ -42,19 +43,19 @@ class AppPreferences(private val dataStore: DataStore<Preferences>) {
     }
 
     private suspend fun saveToken(token: String) {
-        dataStore.edit { preferences ->
+        context.dataStore.edit { preferences ->
             preferences[TOKEN] = token
         }
     }
 
     suspend fun saveStories(stories: String) {
-        dataStore.edit { preferences ->
+        context.dataStore.edit { preferences ->
             preferences[STORIES_KEY] = stories
         }
     }
 
     fun getStories(): Flow<ArrayList<Story>?> {
-        return dataStore.data.map { preferences ->
+        return context.dataStore.data.map { preferences ->
             if (preferences[STORIES_KEY] != null) {
                 val arrayListTutorialType = object : TypeToken<ArrayList<Story>>() {}.type
                 return@map Gson().fromJson<ArrayList<Story>?>(preferences[STORIES_KEY], arrayListTutorialType)
@@ -65,13 +66,13 @@ class AppPreferences(private val dataStore: DataStore<Preferences>) {
     }
 
     fun getToken(): Flow<String> {
-        return dataStore.data.map { preferences ->
+        return context.dataStore.data.map { preferences ->
             preferences[TOKEN] ?: ""
         }
     }
 
     fun getSession(): Flow<User> {
-        return dataStore.data.map { preferences ->
+        return context.dataStore.data.map { preferences ->
             User(
                 preferences[ID_KEY] ?: "",
                 preferences[NAME_KEY] ?: "",
@@ -86,13 +87,17 @@ class AppPreferences(private val dataStore: DataStore<Preferences>) {
         private val NAME_KEY = stringPreferencesKey("name")
         private val STORIES_KEY = stringPreferencesKey("stories")
 
-        @Volatile
-        private var INSTANCE: AppPreferences? = null
-
-        @Synchronized
-        fun initPreferences(dataStore: DataStore<Preferences>): AppPreferences {
-            return INSTANCE ?: AppPreferences(dataStore).also { INSTANCE = it }
-        }
+//        @Volatile
+//        private var INSTANCE: AppPreferences? = null
+//
+//        @Synchronized
+//        @JvmStatic
+//        fun initPreferences(appContext: Context): AppPreferences {
+//            return INSTANCE ?: AppPreferences(context = appContext).also {
+//                INSTANCE = it
+//            }
+//        }
     }
+
 
 }

@@ -3,10 +3,10 @@ package com.aad.storyapp.repository
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import androidx.room.withTransaction
-import com.aad.storyapp.BaseApplication
 import com.aad.storyapp.datasource.local.AppDatabase
 import com.aad.storyapp.helper.DataClassMapper.mapStoryEntityToStoryModel
 import com.aad.storyapp.model.Story
+import org.koin.java.KoinJavaComponent.inject
 
 /****************************************************
  * Created by Indra Muliana
@@ -17,7 +17,7 @@ import com.aad.storyapp.model.Story
 
 class StoryRemoteMediatorPagingSource : PagingSource<Int, Story>() {
 
-    private val database: AppDatabase by lazy { BaseApplication.db }
+    private val database: AppDatabase by inject(AppDatabase::class.java)
 
     private companion object {
         const val INITIAL_PAGE_INDEX = 0

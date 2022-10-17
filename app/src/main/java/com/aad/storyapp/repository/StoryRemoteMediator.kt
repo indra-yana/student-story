@@ -5,12 +5,12 @@ import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
-import com.aad.storyapp.BaseApplication
 import com.aad.storyapp.datasource.local.AppDatabase
 import com.aad.storyapp.datasource.local.entities.RemoteKeys
 import com.aad.storyapp.datasource.remote.IStoryApi
 import com.aad.storyapp.helper.DataClassMapper.mapStoryModelToStoryEntity
 import com.aad.storyapp.model.Story
+import org.koin.java.KoinJavaComponent.inject
 
 /****************************************************
  * Created by Indra Muliana
@@ -20,10 +20,10 @@ import com.aad.storyapp.model.Story
  ****************************************************/
 
 @OptIn(ExperimentalPagingApi::class)
-class StoryRemoteMediator() : RemoteMediator<Int, Story>() {
+class StoryRemoteMediator : RemoteMediator<Int, Story>() {
 
-    private val storyApi: IStoryApi by lazy { BaseApplication.storyApi }
-    private val database: AppDatabase by lazy { BaseApplication.db }
+    private val storyApi: IStoryApi by inject(IStoryApi::class.java)
+    private val database: AppDatabase by inject(AppDatabase::class.java)
 
     private companion object {
         const val INITIAL_PAGE_INDEX = 1
@@ -94,7 +94,6 @@ class StoryRemoteMediator() : RemoteMediator<Int, Story>() {
             }
         }
     }
-
 
     override suspend fun initialize(): InitializeAction {
         return InitializeAction.LAUNCH_INITIAL_REFRESH

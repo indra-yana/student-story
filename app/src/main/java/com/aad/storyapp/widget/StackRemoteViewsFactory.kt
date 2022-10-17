@@ -17,6 +17,8 @@ import com.aad.storyapp.model.Story
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.FutureTarget
 import kotlinx.coroutines.runBlocking
+import org.koin.java.KoinJavaComponent
+import org.koin.java.KoinJavaComponent.inject
 
 
 /****************************************************
@@ -30,8 +32,8 @@ class StackRemoteViewsFactory(private val mContext: Context) : RemoteViewsServic
 
     private val TAG = this::class.java.simpleName
     private lateinit var mStories: List<Story>
-    private val preferences: AppPreferences by lazy { BaseApplication.pref }
-    private val database: AppDatabase by lazy { BaseApplication.db }
+    private val preferences: AppPreferences by inject(AppPreferences::class.java)
+    private val database: AppDatabase by inject(AppDatabase::class.java)
 
     override fun onCreate() {
         Log.d(TAG, "onCreate: Widget created!")

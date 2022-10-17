@@ -2,10 +2,9 @@ package com.aad.storyapp.repository
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.aad.storyapp.BaseApplication
 import com.aad.storyapp.datasource.remote.IStoryApi
 import com.aad.storyapp.model.Story
-import java.lang.Exception
+import org.koin.java.KoinJavaComponent.inject
 
 /****************************************************
  * Created by Indra Muliana
@@ -16,7 +15,7 @@ import java.lang.Exception
 
 class StoryPagingSource : PagingSource<Int, Story>() {
 
-    private val storyApi: IStoryApi by lazy { BaseApplication.storyApi }
+    private val storyApi: IStoryApi by inject(IStoryApi::class.java)
 
     private companion object {
         const val INITIAL_PAGE_INDEX = 1

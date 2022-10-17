@@ -9,6 +9,7 @@ import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.koin.java.KoinJavaComponent.inject
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
@@ -23,7 +24,7 @@ import java.util.concurrent.TimeUnit
 object ApiClient {
 
     private val retrofit: Retrofit
-    private val preferences: AppPreferences by lazy { BaseApplication.pref }
+    private val preferences: AppPreferences by inject(AppPreferences::class.java)
 
     init {
         // Add interceptors to add query param or some header

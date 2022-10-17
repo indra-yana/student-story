@@ -1,9 +1,9 @@
 package com.aad.storyapp.view.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.aad.storyapp.BaseApplication
 import com.aad.storyapp.repository.AuthRepository
 import com.aad.storyapp.repository.StoryRepository
+import org.koin.java.KoinJavaComponent.inject
 
 /****************************************************
  * Created by Indra Muliana
@@ -14,7 +14,7 @@ import com.aad.storyapp.repository.StoryRepository
 
 abstract class BaseViewModel : ViewModel() {
 
-    protected val authRepository: AuthRepository by lazy { BaseApplication.authRepository }
-    protected val storyRepository: StoryRepository by lazy { BaseApplication.storyRepository }
+    protected val authRepository: AuthRepository by inject(AuthRepository::class.java)
+    protected val storyRepository: StoryRepository by inject(StoryRepository::class.java)
 
 }
