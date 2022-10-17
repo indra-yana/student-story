@@ -3,6 +3,7 @@ package com.aad.storyapp
 import android.app.Application
 import com.aad.storyapp.di.appModule
 import com.aad.storyapp.di.repositoryModule
+import com.aad.storyapp.di.viewModelModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
@@ -30,7 +31,8 @@ class BaseApplication : Application() {
             androidContext(this@BaseApplication)
             modules(
                 appModule,
-                repositoryModule
+                repositoryModule,
+                viewModelModule
             )
         }
     }

@@ -14,7 +14,6 @@ import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.ViewModelProvider
 import com.aad.storyapp.R
 import com.aad.storyapp.databinding.ActivityCreateStoryBinding
 import com.aad.storyapp.datasource.remote.response.ResponseStatus
@@ -23,7 +22,6 @@ import com.aad.storyapp.model.Story
 import com.aad.storyapp.model.User
 import com.aad.storyapp.view.camera.CameraXActivity
 import com.aad.storyapp.view.viewmodel.StoryViewModel
-import com.aad.storyapp.view.viewmodel.ViewModelFactory
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationRequest
@@ -35,6 +33,7 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
@@ -43,7 +42,7 @@ import java.util.concurrent.TimeUnit
 class CreateStoryActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCreateStoryBinding
-    private lateinit var storyViewModel: StoryViewModel
+    private val storyViewModel: StoryViewModel by viewModel()
 
     private var currentPhotoPath: String? = null
     private var user: User? = null
@@ -219,7 +218,7 @@ class CreateStoryActivity : AppCompatActivity() {
     }
 
     private fun setupViewModel() {
-        storyViewModel = ViewModelProvider(this, ViewModelFactory())[StoryViewModel::class.java]
+//        storyViewModel = ViewModelProvider(this, ViewModelFactory())[StoryViewModel::class.java]
         storyViewModel.storyCreateResponse.observe(this) {
 
             with(binding) {

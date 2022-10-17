@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import com.aad.storyapp.R
 import com.aad.storyapp.databinding.ActivityLoginBinding
 import com.aad.storyapp.datasource.remote.response.ResponseStatus
@@ -14,13 +13,13 @@ import com.aad.storyapp.helper.setupView
 import com.aad.storyapp.helper.visible
 import com.aad.storyapp.view.story.ListStoryActivity
 import com.aad.storyapp.view.viewmodel.AuthViewModel
-import com.aad.storyapp.view.viewmodel.ViewModelFactory
 import kotlinx.coroutines.runBlocking
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
-    private lateinit var authViewModel: AuthViewModel
+    private val authViewModel: AuthViewModel by viewModel()
 
     companion object {
         private val TAG = LoginActivity::class.java.simpleName
@@ -62,7 +61,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun setupViewModel() {
-        authViewModel = ViewModelProvider(this, ViewModelFactory())[AuthViewModel::class.java]
+//        authViewModel = ViewModelProvider(this, ViewModelFactory())[AuthViewModel::class.java]
         authViewModel.loginResponse.observe(this) {
 
             with(binding) {

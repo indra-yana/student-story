@@ -12,7 +12,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
-import androidx.lifecycle.ViewModelProvider
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aad.storyapp.R
@@ -27,15 +26,15 @@ import com.aad.storyapp.view.adapter.StoryAdapter
 import com.aad.storyapp.view.auth.LoginActivity
 import com.aad.storyapp.view.viewmodel.AuthViewModel
 import com.aad.storyapp.view.viewmodel.StoryViewModel
-import com.aad.storyapp.view.viewmodel.ViewModelFactory
 import com.aad.storyapp.widget.ImageBannerWidget
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class ListStoryActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityStoryBinding
-    private lateinit var storyViewModel: StoryViewModel
-    private lateinit var authViewModel: AuthViewModel
+    private val storyViewModel: StoryViewModel by viewModel()
+    private val authViewModel: AuthViewModel by viewModel()
     private lateinit var storyAdapter: StoryAdapter
     private var user: User? = null
 
@@ -72,9 +71,6 @@ class ListStoryActivity : AppCompatActivity() {
     }
 
     private fun setupVieModel() {
-        storyViewModel = ViewModelProvider(this, ViewModelFactory())[StoryViewModel::class.java]
-        authViewModel = ViewModelProvider(this, ViewModelFactory())[AuthViewModel::class.java]
-
         storyViewModel.storiesResponsePager.observe(this) {
             storyAdapter.submitData(lifecycle, it)
         }

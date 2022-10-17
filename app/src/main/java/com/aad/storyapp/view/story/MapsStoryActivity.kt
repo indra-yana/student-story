@@ -13,7 +13,6 @@ import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.ViewModelProvider
 import com.aad.storyapp.R
 import com.aad.storyapp.databinding.ActivityMapsStoryBinding
 import com.aad.storyapp.datasource.remote.response.ResponseStatus
@@ -22,7 +21,6 @@ import com.aad.storyapp.helper.setupView
 import com.aad.storyapp.helper.visible
 import com.aad.storyapp.model.Story
 import com.aad.storyapp.view.viewmodel.StoryViewModel
-import com.aad.storyapp.view.viewmodel.ViewModelFactory
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationRequest
@@ -36,6 +34,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.concurrent.TimeUnit
 
 
@@ -47,7 +46,7 @@ class MapsStoryActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationRequest: LocationRequest
     private var stories = arrayListOf<Story>()
-    private lateinit var storyViewModel: StoryViewModel
+    private val storyViewModel: StoryViewModel by viewModel()
     private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permission ->
         when {
             permission[Manifest.permission.ACCESS_FINE_LOCATION] ?: false -> {
@@ -104,7 +103,7 @@ class MapsStoryActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun setupVieModel() {
-        storyViewModel = ViewModelProvider(this, ViewModelFactory())[StoryViewModel::class.java]
+//        storyViewModel = ViewModelProvider(this, ViewModelFactory())[StoryViewModel::class.java]
         storyViewModel.storiesResponse.observe(this) {
 
             binding.pbLoading.visible(it is ResponseStatus.Loading)

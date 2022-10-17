@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import com.aad.storyapp.R
 import com.aad.storyapp.databinding.ActivityRegisterBinding
 import com.aad.storyapp.datasource.remote.response.ResponseStatus
@@ -13,12 +12,12 @@ import com.aad.storyapp.helper.enable
 import com.aad.storyapp.helper.setupView
 import com.aad.storyapp.helper.visible
 import com.aad.storyapp.view.viewmodel.AuthViewModel
-import com.aad.storyapp.view.viewmodel.ViewModelFactory
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class RegisterActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityRegisterBinding
-    private lateinit var authViewModel: AuthViewModel
+    private val authViewModel: AuthViewModel by viewModel()
 
     companion object {
         private val TAG = RegisterActivity::class.java.simpleName
@@ -65,7 +64,7 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun setupViewModel() {
-        authViewModel = ViewModelProvider(this, ViewModelFactory())[AuthViewModel::class.java]
+//        authViewModel = ViewModelProvider(this, ViewModelFactory())[AuthViewModel::class.java]
         authViewModel.registerResponse.observe(this) {
 
             with(binding) {

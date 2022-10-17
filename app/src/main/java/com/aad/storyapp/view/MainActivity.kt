@@ -1,19 +1,18 @@
 package com.aad.storyapp.view
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.lifecycle.ViewModelProvider
+import androidx.appcompat.app.AppCompatActivity
 import com.aad.storyapp.R
 import com.aad.storyapp.helper.setupView
 import com.aad.storyapp.view.auth.LoginActivity
 import com.aad.storyapp.view.story.ListStoryActivity
 import com.aad.storyapp.view.viewmodel.AuthViewModel
-import com.aad.storyapp.view.viewmodel.ViewModelFactory
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var authViewModel: AuthViewModel
+    private val authViewModel: AuthViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,7 +23,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupViewModel() {
-        authViewModel = ViewModelProvider(this, ViewModelFactory())[AuthViewModel::class.java]
+//        authViewModel = ViewModelProvider(this, ViewModelFactory())[AuthViewModel::class.java]
         authViewModel.session.observe(this) { user ->
             if (user.token.isEmpty()) {
                 startActivity(Intent(this, LoginActivity::class.java))
