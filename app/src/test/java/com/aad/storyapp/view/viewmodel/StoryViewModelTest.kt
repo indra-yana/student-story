@@ -8,7 +8,6 @@ import com.aad.storyapp.datasource.remote.response.StoryResponse
 import com.aad.storyapp.helper.Dummy
 import com.aad.storyapp.helper.MainDispatcherRule
 import com.aad.storyapp.helper.getOrAwaitValue
-import com.aad.storyapp.repository.StoryRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.test.runTest
@@ -41,19 +40,11 @@ class StoryViewModelTest {
     val mainDispatcherRule = MainDispatcherRule()
 
     private val storyViewModel: StoryViewModel = mock(StoryViewModel::class.java)
-    private val storyRepository: StoryRepository = mock(StoryRepository::class.java)
 
     @Test
     fun `When get stories should return story response with not empty list`() = runTest {
         val expectedResponse = ResponseStatus.Success(Dummy.generateDummyStoryResponse())
 
-        `when`(storyRepository.stories()).thenReturn(expectedResponse)
-        val actualResponse = storyRepository.stories()
-        Mockito.verify(storyRepository).stories()
-        Assert.assertNotNull(actualResponse)
-        Assert.assertTrue(actualResponse is ResponseStatus.Success)
-
-        // Test to ensure method stories in storyViewModel is called
         `when`(storyViewModel.stories()).thenReturn(Job())
         storyViewModel.stories()
         Mockito.verify(storyViewModel).stories()
@@ -67,7 +58,7 @@ class StoryViewModelTest {
         Assert.assertNotNull(actualStory)
         Assert.assertTrue(actualStory is ResponseStatus.Success)
         Assert.assertTrue((actualStory as ResponseStatus.Success).value.listStory.isNotEmpty())
-        Assert.assertEquals(actualStory.value.listStory, (actualResponse as ResponseStatus.Success).value.listStory)
+        Assert.assertEquals(actualStory.value.listStory, expectedResponse.value.listStory)
     }
 
     @Test
@@ -78,12 +69,6 @@ class StoryViewModelTest {
         val description = mock(RequestBody::class.java)
         val lat = mock(RequestBody::class.java)
         val lon = mock(RequestBody::class.java)
-
-        `when`(storyRepository.create(photo, description, lat, lon)).thenReturn(expectedResponse)
-        val actualResponse = storyRepository.create(photo, description, lat, lon)
-        Mockito.verify(storyRepository).create(photo, description, lat, lon)
-        Assert.assertNotNull(actualResponse)
-        Assert.assertTrue(actualResponse is ResponseStatus.Success)
 
         // Test to ensure method stories in storyViewModel is called
         `when`(storyViewModel.create(photo, description, lat, lon)).thenReturn(Job())
@@ -98,7 +83,7 @@ class StoryViewModelTest {
 
         Assert.assertNotNull(actualCreateResponse)
         Assert.assertTrue(actualCreateResponse is ResponseStatus.Success)
-        Assert.assertTrue(!(actualCreateResponse as ResponseStatus.Success).value.error)
-        Assert.assertEquals(actualCreateResponse.value.error, (actualResponse as ResponseStatus.Success).value.error)
+        Assert.assertEquals((actualCreateResponse as ResponseStatus.Success).value.error, false)
+        Assert.assertEquals(actualCreateResponse, expectedResponse)
     }
 }
