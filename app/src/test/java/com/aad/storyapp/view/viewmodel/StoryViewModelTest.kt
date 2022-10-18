@@ -2,6 +2,7 @@ package com.aad.storyapp.view.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
+import com.aad.storyapp.datasource.remote.response.ApiResponse
 import com.aad.storyapp.datasource.remote.response.ResponseStatus
 import com.aad.storyapp.datasource.remote.response.StoryResponse
 import com.aad.storyapp.helper.Dummy
@@ -11,6 +12,8 @@ import com.aad.storyapp.repository.StoryRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.test.runTest
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import org.junit.Assert
 import org.junit.Rule
 import org.junit.Test
@@ -65,5 +68,37 @@ class StoryViewModelTest {
         Assert.assertTrue(actualStory is ResponseStatus.Success)
         Assert.assertTrue((actualStory as ResponseStatus.Success).value.listStory.isNotEmpty())
         Assert.assertEquals(actualStory.value.listStory, (actualResponse as ResponseStatus.Success).value.listStory)
+    }
+
+    @Test
+    fun `When create stories should return response with success`() = runTest {
+        val expectedResponse = ResponseStatus.Success(Dummy.generateDummyApiResponse())
+
+        val photo = mock(MultipartBody.Part::class.java)
+        val description = mock(RequestBody::class.java)
+        val lat = mock(RequestBody::class.java)
+        val lon = mock(RequestBody::class.java)
+
+        `when`(storyRepository.create(photo, description, lat, lon)).thenReturn(expectedResponse)
+        val actualResponse = storyRepository.create(photo, description, lat, lon)
+        Mockito.verify(storyRepository).create(photo, description, lat, lon)
+        Assert.assertNotNull(actualResponse)
+        Assert.assertTrue(actualResponse is ResponseStatus.Success)
+
+        // Test to ensure method stories in storyViewModel is called
+        `when`(storyViewModel.create(photo, description, lat, lon)).thenReturn(Job())
+        storyViewModel.create(photo, description, lat, lon)
+        Mockito.verify(storyViewModel).create(photo, description, lat, lon)
+
+        val expectedCreateResponse = MutableLiveData<ResponseStatus<ApiResponse>>()
+        expectedCreateResponse.value = ResponseStatus.Success(Dummy.generateDummyApiResponse())
+
+        `when`(storyViewModel.storyCreateResponse).thenReturn(expectedCreateResponse)
+        val actualCreateResponse = storyViewModel.storyCreateResponse.getOrAwaitValue()
+
+        Assert.assertNotNull(actualCreateResponse)
+        Assert.assertTrue(actualCreateResponse is ResponseStatus.Success)
+        Assert.assertTrue(!(actualCreateResponse as ResponseStatus.Success).value.error)
+        Assert.assertEquals(actualCreateResponse.value.error, (actualResponse as ResponseStatus.Success).value.error)
     }
 }

@@ -1,5 +1,6 @@
 package com.aad.storyapp.helper
 
+import com.aad.storyapp.datasource.remote.response.ApiResponse
 import com.aad.storyapp.datasource.remote.response.StoryResponse
 import com.aad.storyapp.model.Story
 
@@ -34,6 +35,13 @@ object Dummy {
             error = false,
             message = "Success!",
             listStory = generateDummyStories()
+        )
+    }
+
+    fun generateDummyApiResponse(): ApiResponse {
+        return ApiResponse(
+            error = false,
+            message = "Success!",
         )
     }
 }
