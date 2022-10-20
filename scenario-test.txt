@@ -1,0 +1,22 @@
+# Scenario AuthViewModelTest
+- when user login should return success response with user
+- when user register should return success response
+- when get token should return token
+- when destroy session should return empty token
+
+# Scenario StoryViewModelTest
+- When get stories should return story response with not empty list
+- When create stories should return response with success
+
+# Scenario AuthRepositoryTest
+- when login with correct credential should return response success
+- when login with incorrect credential should return response failed
+- when register with correct input should return response success
+- when register with incorrect input should return response failure
+- when save session and then get token should return user token
+- when save session and then get session should return user
+- when destroy session should return user with null value
+
+# Scenario StoryRepositoryTest
+- When get stories should return story response with not empty list
+- When create stories should return response with success
