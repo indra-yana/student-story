@@ -11,7 +11,7 @@ data class LoginResponse(
     @SerializedName("error")
     val error: Boolean,
     @SerializedName("loginResult")
-    val loginResult: User,
+    val loginResult: User?,
     @SerializedName("message")
     val message: String
 ) : Parcelable

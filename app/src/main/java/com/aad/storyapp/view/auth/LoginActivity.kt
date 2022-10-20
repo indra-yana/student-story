@@ -77,7 +77,7 @@ class LoginActivity : AppCompatActivity() {
                     Toast.makeText(this@LoginActivity, getString(R.string.login_successfully, it.value.message), Toast.LENGTH_SHORT).show()
 
                     runBlocking {
-                        authViewModel.saveSession(it.value.loginResult)
+                        authViewModel.saveSession(it.value.loginResult!!)
                     }
 
                     val intent = Intent(this@LoginActivity, ListStoryActivity::class.java)

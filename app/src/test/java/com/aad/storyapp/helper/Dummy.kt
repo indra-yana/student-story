@@ -1,8 +1,10 @@
 package com.aad.storyapp.helper
 
 import com.aad.storyapp.datasource.remote.response.ApiResponse
+import com.aad.storyapp.datasource.remote.response.LoginResponse
 import com.aad.storyapp.datasource.remote.response.StoryResponse
 import com.aad.storyapp.model.Story
+import com.aad.storyapp.model.User
 
 /****************************************************
  * Created by Indra Muliana
@@ -35,6 +37,25 @@ object Dummy {
             error = false,
             message = "Success!",
             listStory = generateDummyStories()
+        )
+    }
+
+    fun generateDummyLoginResponse(isFailure: Boolean = false): LoginResponse {
+        return LoginResponse(
+            error = isFailure,
+            message = if (isFailure) "Login failure" else "Success!",
+            loginResult = if (isFailure) null else User(
+                id = "user-example-id",
+                name = "User Example",
+                token = "example.token.user"
+            )
+        )
+    }
+
+    fun generateDummyRegisterResponse(isFailure: Boolean = false): ApiResponse {
+        return ApiResponse(
+            error = isFailure,
+            message = if (isFailure) "Register failure" else "Success!",
         )
     }
 
