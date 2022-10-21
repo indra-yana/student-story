@@ -1,22 +1,29 @@
 # Scenario AuthViewModelTest
-- when user login should return success response with user
-- when user register should return success response
-- when get token should return token
-- when destroy session should return empty token
+-> when user login should return success response with user (Menguji ketika user login harus mengembalikan response sukses dengan object user)
+-> when user register should return success response (Menguji ketika user register harus  mengembalikan response sukses)
+-> when get token should return token (Menguji ketika memanggil method getToken harus mengemablikan token)
+-> when destroy session should return empty token (Menguji ketika memanggil destroy session harus mengembalikan token kosong)
 
 # Scenario StoryViewModelTest
-- When get stories should return story response with not empty list
-- When create stories should return response with success
+-> When get stories should return story response with not empty list (Menguji ketika memanggil getStories harus mengembalikan response story tidak kosong)
+-> When create stories should return response with success (Menguji ketika create stories harus mengembalikan response sukses)
 
 # Scenario AuthRepositoryTest
-- when login with correct credential should return response success
-- when login with incorrect credential should return response failed
-- when register with correct input should return response success
-- when register with incorrect input should return response failure
-- when save session and then get token should return user token
-- when save session and then get session should return user
-- when destroy session should return user with null value
+-> when login with correct credential should return response success (menguji ketika login dengan credential yang benar harus mengembalikan response sukses)
+-> when login with incorrect credential should return response failed (menguji ketika login dengan credential yang salah harus mengembalikan response gagal)
+-> when register with correct input should return response success (menguji ketika register dengan credential yang benar harus mengembalikan response sukses)
+-> when register with incorrect input should return response failure (menguji ketika register dengan credential yang salah harus mengembalikan response gagal)
+-> when save session and then get token should return user token (Menguji ketika memanggil method saveSession lalu memanggil method getToken harus mengemablikan token)
+-> when save session and then get session should return user (Menguji ketika memanggil method saveSession lalu memanggil method getSession harus mengemblikan data sesi user)
+-> when destroy session should return user with null value (Menguji ketika memanggil destroy session harus mengembalikan token kosong)
 
 # Scenario StoryRepositoryTest
-- When get stories should return story response with not empty list
-- When create stories should return response with success
+-> When get stories should return story response with not empty list (Menguji ketika memanggil getStories harus mengembalikan response story tidak kosong)
+-> When create stories should return response with success (Menguji ketika create stories harus mengembalikan response sukses)
+
+# Scenario StoryDaoTest
+-> saveStory_Success (Menguji ketika memanggil save story dao harus mengembalikan list story)
+
+# Scenario StoryRemoteMediatorTest
+-> refreshLoadReturnsSuccessResultWhenMoreDataIsPresent (Menguji remote mediator berisi data list story)
+-> whenCallCreateStoryShouldReturnSuccess (Menguji ketika memanggil endpoint create story harus mengambalikan response sukses)

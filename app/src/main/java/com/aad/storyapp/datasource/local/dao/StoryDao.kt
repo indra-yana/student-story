@@ -17,7 +17,7 @@ import com.aad.storyapp.datasource.local.entities.Story
 @Dao
 interface StoryDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertStory(quote: List<Story>)
+    suspend fun insertStory(stories: List<Story>)
 
     @Query("SELECT * FROM stories")
     fun getAllStory(): PagingSource<Int, com.aad.storyapp.model.Story>
