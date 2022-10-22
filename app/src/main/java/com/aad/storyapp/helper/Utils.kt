@@ -19,7 +19,6 @@ import android.widget.ImageView
 import androidx.appcompat.app.ActionBar
 import androidx.core.content.ContextCompat
 import com.aad.storyapp.R
-import com.aad.storyapp.view.story.MapsStoryActivity
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import java.io.*
