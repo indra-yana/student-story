@@ -1,0 +1,186 @@
+{
+  "error": false,
+  "message": "Stories fetched successfully",
+  "listStory": [
+    {
+      "id": "story-8Nh6ab6am-yhUUS2",
+      "name": "Testing Matched View",
+      "description": "tes",
+      "photoUrl": "https://story-api.dicoding.dev/images/stories/photos-1666366394073_zD-t9dtV.jpg",
+      "createdAt": "2022-10-21T15:33:14.076Z",
+      "lat": -7.8974171,
+      "lon": 112.6169435
+    },
+    {
+      "id": "story-xEvBtJIel3MUJbLf",
+      "name": "Testing2",
+      "description": "test",
+      "photoUrl": "https://story-api.dicoding.dev/images/stories/photos-1666366291417_9rhqzS_R.jpg",
+      "createdAt": "2022-10-21T15:31:31.420Z",
+      "lat": -7.8974135,
+      "lon": 112.6169421
+    },
+    {
+      "id": "story-kpRR3ji1gG7nuHVd",
+      "name": "Test333",
+      "description": "test",
+      "photoUrl": "https://story-api.dicoding.dev/images/stories/photos-1666366238857_tzHnZbS3.jpg",
+      "createdAt": "2022-10-21T15:30:38.895Z",
+      "lat": -7.8974074,
+      "lon": 112.6169439
+    },
+    {
+      "id": "story-guuRdizR82bV_GUN",
+      "name": "Bagas Pardana Ilham",
+      "description": "test",
+      "photoUrl": "https://story-api.dicoding.dev/images/stories/photos-1666364952296_BSyX4ib2.jpg",
+      "createdAt": "2022-10-21T15:09:12.296Z",
+      "lat": -6.8457046,
+      "lon": 107.917854
+    },
+    {
+      "id": "story-dVbwjUi_lNjOyTuj",
+      "name": "adcqwe",
+      "description": "Testing Scroll Item",
+      "photoUrl": "https://story-api.dicoding.dev/images/stories/photos-1666364446890_UU7bKvgX.jpg",
+      "createdAt": "2022-10-21T15:00:46.891Z",
+      "lat": -6.128151,
+      "lon": 106.844935
+    },
+    {
+      "id": "story-aDlwR38u1J6bkKRi",
+      "name": "Joko Tingkir",
+      "description": "Ini apaan sih",
+      "photoUrl": "https://story-api.dicoding.dev/images/stories/photos-1666362412970_n3TFKwGI.jpg",
+      "createdAt": "2022-10-21T14:26:52.973Z",
+      "lat": -7.781305,
+      "lon": 110.3781933
+    },
+    {
+      "id": "story-S6SyUTpjiy49Mty3",
+      "name": "Joko Tingkir",
+      "description": "vobainn",
+      "photoUrl": "https://story-api.dicoding.dev/images/stories/photos-1666362366646_5DDICFDz.jpg",
+      "createdAt": "2022-10-21T14:26:06.646Z",
+      "lat": -7.781305,
+      "lon": 110.3781933
+    },
+    {
+      "id": "story-4stHTSLEi9jy1rV4",
+      "name": "mufti",
+      "description": "qwertyuiop",
+      "photoUrl": "https://story-api.dicoding.dev/images/stories/photos-1666356053282_jK4lcjg6.jpg",
+      "createdAt": "2022-10-21T12:40:53.284Z",
+      "lat": -6.9830533,
+      "lon": 109.1365083
+    },
+    {
+      "id": "story-l0Nb1jd-jwUC06zE",
+      "name": "yusril",
+      "description": "dsfdsfdsfdsfdsf",
+      "photoUrl": "https://story-api.dicoding.dev/images/stories/photos-1666353738679_5BeGyXfH.png",
+      "createdAt": "2022-10-21T12:02:18.680Z",
+      "lat": 1,
+      "lon": 1
+    },
+    {
+      "id": "story-KB31RhvmfrL_X-W4",
+      "name": "yusril",
+      "description": "ini aku coy",
+      "photoUrl": "https://story-api.dicoding.dev/images/stories/photos-1666349820429_Hcpx6aGz.png",
+      "createdAt": "2022-10-21T10:57:00.430Z",
+      "lat": 0.1,
+      "lon": 0.1
+    },
+    {
+      "id": "story-6zgK67xuK2Bzb6fb",
+      "name": "Dwi Candra Permana",
+      "description": "Tes lokasi",
+      "photoUrl": "https://story-api.dicoding.dev/images/stories/photos-1666346106044_sEn1RDAm.jpg",
+      "createdAt": "2022-10-21T09:55:06.044Z",
+      "lat": -6.905852125014235,
+      "lon": 107.63782247604536
+    },
+    {
+      "id": "story-nuYrRodHUy33FcmV",
+      "name": "tes",
+      "description": "wkwkwkwkw",
+      "photoUrl": "https://story-api.dicoding.dev/images/stories/photos-1666344581925_SI-h_Ok6.jpg",
+      "createdAt": "2022-10-21T09:29:41.927Z",
+      "lat": -6.2066967,
+      "lon": 106.7708
+    },
+    {
+      "id": "story-yBbUrg5vIbk69w47",
+      "name": "Dani Rofianto",
+      "description": "jam",
+      "photoUrl": "https://story-api.dicoding.dev/images/stories/photos-1666343294204_NsaYzBAn.jpg",
+      "createdAt": "2022-10-21T09:08:14.207Z",
+      "lat": -5.3559689,
+      "lon": 105.2312155
+    },
+    {
+      "id": "story-YlbxYOxIl7UJeNiO",
+      "name": "Heryanto",
+      "description": "test",
+      "photoUrl": "https://story-api.dicoding.dev/images/stories/photos-1666342684204_0QGo1Hbw.jpg",
+      "createdAt": "2022-10-21T08:58:04.210Z",
+      "lat": -2.9736919,
+      "lon": 104.7642212
+    },
+    {
+      "id": "story-rhNQAV33iYiD7UKB",
+      "name": "rev",
+      "description": "rere",
+      "photoUrl": "https://story-api.dicoding.dev/images/stories/photos-1666339533827_MAvCeeoa.jpg",
+      "createdAt": "2022-10-21T08:05:33.829Z",
+      "lat": 37.4220936,
+      "lon": -122.083922
+    },
+    {
+      "id": "story-P8YC5yrXPDwpIkwd",
+      "name": "test123",
+      "description": "cek cek",
+      "photoUrl": "https://story-api.dicoding.dev/images/stories/photos-1666339459291_fkiUGNQy.jpg",
+      "createdAt": "2022-10-21T08:04:19.294Z",
+      "lat": -6.2332895,
+      "lon": 106.793723
+    },
+    {
+      "id": "story-MjPTLlC54chOJMU7",
+      "name": "arief",
+      "description": "gg",
+      "photoUrl": "https://story-api.dicoding.dev/images/stories/photos-1666339159613_4pJwjADM.jpg",
+      "createdAt": "2022-10-21T07:59:19.614Z",
+      "lat": -7.690723,
+      "lon": 110.4076212
+    },
+    {
+      "id": "story-c1eO4TqypztCIrHu",
+      "name": "arief",
+      "description": "gg",
+      "photoUrl": "https://story-api.dicoding.dev/images/stories/photos-1666338955728_ImC-HwPa.jpg",
+      "createdAt": "2022-10-21T07:55:55.729Z",
+      "lat": -7.690723,
+      "lon": 110.4076212
+    },
+    {
+      "id": "story-oAK6noF6xVQRmsd5",
+      "name": "arief",
+      "description": "hg",
+      "photoUrl": "https://story-api.dicoding.dev/images/stories/photos-1666338944443_zauUBWwf.jpg",
+      "createdAt": "2022-10-21T07:55:44.446Z",
+      "lat": -7.690723,
+      "lon": 110.4076212
+    },
+    {
+      "id": "story-wOrEmWnkz28Ja_vw",
+      "name": "arief",
+      "description": "gg",
+      "photoUrl": "https://story-api.dicoding.dev/images/stories/photos-1666338864634_BtdPXs_Q.jpg",
+      "createdAt": "2022-10-21T07:54:24.636Z",
+      "lat": -7.690723,
+      "lon": 110.4076212
+    }
+  ]
+}

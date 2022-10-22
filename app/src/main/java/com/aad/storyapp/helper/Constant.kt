@@ -9,7 +9,7 @@ package com.aad.storyapp.helper
 
 @Suppress("unused")
 object Constant {
-    const val BASE_URL = "https://story-api.dicoding.dev/v1/"
+    var BASE_URL = "https://story-api.dicoding.dev/v1/"
     const val DELAY_SPLASH = 2000L
     const val CONNECTION_TIMEOUT = 60L
 }

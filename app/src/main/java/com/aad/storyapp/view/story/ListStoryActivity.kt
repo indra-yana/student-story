@@ -5,6 +5,7 @@ import android.content.ComponentName
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -124,7 +125,8 @@ class ListStoryActivity : AppCompatActivity() {
                         else -> null
                     }
                     errorState?.let {
-                        Toast.makeText(this@ListStoryActivity, it.error.toString(), Toast.LENGTH_LONG).show()
+                        Log.e(TAG, "initAdapter: ${it.error}")
+                        Toast.makeText(this@ListStoryActivity, getString(R.string.an_error_occurred), Toast.LENGTH_LONG).show()
                     }
                 }
             }
@@ -182,11 +184,15 @@ class ListStoryActivity : AppCompatActivity() {
             if (story != null) {
                 // TODO: Check this
                 // storyAdapter.submitData(lifecycle, PagingData.from(listOf(story)))
-                storyAdapter.snapshot().items.toMutableList().add(0, story)
-                storyAdapter.notifyItemInserted(0)
-                storyAdapter.refresh()
+                try {
+                    storyAdapter.snapshot().items.toMutableList().add(0, story)
+                    storyAdapter.notifyItemInserted(0)
+                    storyAdapter.refresh()
 
-                binding.rvStories.smoothScrollToPosition(0)
+                    binding.rvStories.smoothScrollToPosition(0)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
             }
         }
     }

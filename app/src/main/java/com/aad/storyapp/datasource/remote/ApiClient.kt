@@ -1,6 +1,6 @@
 package com.aad.storyapp.datasource.remote
 
-import com.aad.storyapp.BaseApplication
+import android.util.Log
 import com.aad.storyapp.BuildConfig
 import com.aad.storyapp.datasource.local.AppPreferences
 import com.aad.storyapp.helper.Constant
@@ -25,6 +25,7 @@ object ApiClient {
 
     private val retrofit: Retrofit
     private val preferences: AppPreferences by inject(AppPreferences::class.java)
+    var BASE_URL = Constant.BASE_URL
 
     init {
         // Add interceptors to add query param or some header
@@ -74,8 +75,9 @@ object ApiClient {
             .connectTimeout(Constant.CONNECTION_TIMEOUT, TimeUnit.SECONDS)
             .build()
 
+        Log.d("BASE_URL", "$BASE_URL: ")
         retrofit = Retrofit.Builder()
-            .baseUrl(Constant.BASE_URL)
+            .baseUrl(BASE_URL)
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
