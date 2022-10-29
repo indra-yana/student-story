@@ -27,9 +27,9 @@ abstract class BaseRepository {
     protected val database: AppDatabase by inject(AppDatabase::class.java)
 
     suspend fun <T> safeApiCall(clazz: Class<T>, apiCall: suspend () -> T): ResponseStatus<T> {
-        wrapEspressoIdlingResource {
-            return withContext(Dispatchers.IO) {
-                try {
+//        return withContext(Dispatchers.IO) {
+//            wrapEspressoIdlingResource {
+            return try {
                     ResponseStatus.Success(apiCall.invoke())
                 } catch (exception: Exception) {
                     when (exception) {
@@ -39,8 +39,8 @@ abstract class BaseRepository {
                         else -> ResponseStatus.Failure(exception)
                     }
                 }
-            }
-        }
+//            }
+//        }
     }
 
 }

@@ -21,11 +21,11 @@ import kotlinx.coroutines.flow.map
  ****************************************************/
 
 
-class AppPreferences(private val context: Context) {
+open class AppPreferences(private val context: Context) {
 
     private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "setting")
 
-    suspend fun saveSession(user: User) {
+    open suspend fun saveSession(user: User) {
         context.dataStore.edit { preferences ->
             preferences[ID_KEY] = user.id
             preferences[NAME_KEY] = user.name
@@ -34,7 +34,17 @@ class AppPreferences(private val context: Context) {
         saveToken(user.token)
     }
 
-    suspend fun destroySession() {
+    open fun getSession(): Flow<User> {
+        return context.dataStore.data.map { preferences ->
+            User(
+                preferences[ID_KEY] ?: "",
+                preferences[NAME_KEY] ?: "",
+                preferences[TOKEN] ?: ""
+            )
+        }
+    }
+
+    open suspend fun destroySession() {
         context.dataStore.edit { preferences ->
             preferences.remove(TOKEN)
             preferences.remove(ID_KEY)
@@ -42,9 +52,15 @@ class AppPreferences(private val context: Context) {
         }
     }
 
-    private suspend fun saveToken(token: String) {
+    open suspend fun saveToken(token: String) {
         context.dataStore.edit { preferences ->
             preferences[TOKEN] = token
+        }
+    }
+
+    open fun getToken(): Flow<String> {
+        return context.dataStore.data.map { preferences ->
+            preferences[TOKEN] ?: ""
         }
     }
 
@@ -62,22 +78,6 @@ class AppPreferences(private val context: Context) {
             }
 
             return@map null
-        }
-    }
-
-    fun getToken(): Flow<String> {
-        return context.dataStore.data.map { preferences ->
-            preferences[TOKEN] ?: ""
-        }
-    }
-
-    fun getSession(): Flow<User> {
-        return context.dataStore.data.map { preferences ->
-            User(
-                preferences[ID_KEY] ?: "",
-                preferences[NAME_KEY] ?: "",
-                preferences[TOKEN] ?: ""
-            )
         }
     }
 

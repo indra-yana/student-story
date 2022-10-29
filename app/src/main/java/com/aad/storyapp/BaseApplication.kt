@@ -1,11 +1,7 @@
 package com.aad.storyapp
 
 import android.app.Application
-import com.aad.storyapp.di.appModule
-import com.aad.storyapp.di.repositoryModule
-import com.aad.storyapp.di.viewModelModule
-import org.koin.android.ext.koin.androidContext
-import org.koin.core.context.startKoin
+import com.aad.storyapp.di.Injection.startDI
 
 /****************************************************
  * Created by Indra Muliana
@@ -17,43 +13,6 @@ import org.koin.core.context.startKoin
 class BaseApplication : Application() {
     override fun onCreate() {
         super.onCreate()
-
-//        authApi = ApiClient.initApi(IAuthApi::class.java)
-//        storyApi = ApiClient.initApi(IStoryApi::class.java)
-//        pref = AppPreferences(this).initPreferences(this)
-//        db = AppDatabase.getDatabase(this)
-//        authRepository = AuthRepository()
-//        storyRepository = StoryRepository()
+        startDI(this)
     }
-
-    init {
-        startKoin {
-            androidContext(this@BaseApplication)
-            modules(
-                appModule,
-                repositoryModule,
-                viewModelModule
-            )
-        }
-    }
-
-//    companion object {
-//        @JvmStatic
-//        lateinit var authApi: IAuthApi
-//
-//        @JvmStatic
-//        lateinit var storyApi: IStoryApi
-//
-//        @JvmStatic
-//        lateinit var pref: AppPreferences
-//
-//        @JvmStatic
-//        lateinit var db: AppDatabase
-//
-//        @JvmStatic
-//        lateinit var authRepository: AuthRepository
-//
-//        @JvmStatic
-//        lateinit var storyRepository: StoryRepository
-//    }
 }

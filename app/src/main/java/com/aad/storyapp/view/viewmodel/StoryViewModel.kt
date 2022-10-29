@@ -28,7 +28,7 @@ class StoryViewModel : BaseViewModel() {
     private val _storiesResponse: MutableLiveData<ResponseStatus<StoryResponse>> = MutableLiveData()
     val storiesResponse: LiveData<ResponseStatus<StoryResponse>> get() = _storiesResponse
 
-    val storiesResponsePager: LiveData<PagingData<Story>> = storyRepository.storiesWithPagination().cachedIn(viewModelScope)
+    val storiesResponsePager: LiveData<PagingData<Story>> get() = storyRepository.storiesWithPagination().cachedIn(viewModelScope)
 
     fun create(photo: MultipartBody.Part, description: RequestBody, lat: RequestBody, lon: RequestBody) = viewModelScope.launch {
         _storyCreateResponse.value = ResponseStatus.Loading

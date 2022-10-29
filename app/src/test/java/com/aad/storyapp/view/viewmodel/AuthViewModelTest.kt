@@ -1,19 +1,18 @@
 package com.aad.storyapp.view.viewmodel
 
+import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.MutableLiveData
-import com.aad.storyapp.datasource.remote.response.ApiResponse
-import com.aad.storyapp.datasource.remote.response.LoginResponse
 import com.aad.storyapp.datasource.remote.response.ResponseStatus
+import com.aad.storyapp.di.TestInjection
 import com.aad.storyapp.helper.Dummy
 import com.aad.storyapp.helper.MainDispatcherRule
 import com.aad.storyapp.helper.getOrAwaitValue
-import com.aad.storyapp.model.User
 import com.aad.storyapp.repository.AuthRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert
+import org.junit.After
+import org.junit.Assert.*
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -36,86 +35,84 @@ class AuthViewModelTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
-    private val authViewModel: AuthViewModel = Mockito.mock(AuthViewModel::class.java)
+    private val context: Context = Mockito.mock(Context::class.java)
     private val authRepository: AuthRepository = Mockito.mock(AuthRepository::class.java)
-    private val user = User(
-        id = "user-example-id",
-        name = "User Example",
-        token = "example.token.user"
-    )
+
+    // Real object!
+    private lateinit var authViewModel: AuthViewModel
+
+    private val user = Dummy.user
+
+    @Before
+    fun setUp() {
+        TestInjection.startDI(context)
+        authViewModel = AuthViewModel()
+    }
+
+    @After
+    fun tearDown() {
+        TestInjection.stopDI()
+    }
 
     @Test
     fun `when user login should return success response with user`() = runTest {
         val expectedResponse = ResponseStatus.Success(Dummy.generateDummyLoginResponse())
-        val email = "example@email.com"
-        val password = "secret"
+        val email = Dummy.email
+        val password = Dummy.password
 
-        Mockito.`when`(authViewModel.login(email, password)).thenReturn(Job())
+        Mockito.`when`(authRepository.login(email, password)).thenReturn(expectedResponse)
+        val actualResponse = authRepository.login(email, password)
+        Mockito.verify(authRepository).login(email, password)
+
         authViewModel.login(email, password)
-        Mockito.verify(authViewModel).login(email, password)
+        val actualLogin = authViewModel.loginResponse.getOrAwaitValue()
 
-        val expectedUser = MutableLiveData<ResponseStatus<LoginResponse>>()
-        expectedUser.value = ResponseStatus.Success(Dummy.generateDummyLoginResponse())
-
-        Mockito.`when`(authViewModel.loginResponse).thenReturn(expectedUser)
-        val actualStory = authViewModel.loginResponse.getOrAwaitValue()
-
-        Assert.assertNotNull(actualStory)
-        Assert.assertTrue(actualStory is ResponseStatus.Success)
-        Assert.assertEquals((actualStory as ResponseStatus.Success).value.error, false)
-        Assert.assertEquals(actualStory.value.loginResult, expectedResponse.value.loginResult)
+        assertNotNull(actualLogin)
+        assertTrue(actualLogin is ResponseStatus.Success)
+        assertEquals((actualLogin as ResponseStatus.Success).value.error, false)
+        assertEquals(actualLogin.value.loginResult, expectedResponse.value.loginResult)
+        assertEquals(actualLogin, actualResponse)
     }
 
     @Test
     fun `when user register should return success response`() = runTest {
         val expectedResponse = ResponseStatus.Success(Dummy.generateDummyRegisterResponse())
-        val name = "example account"
-        val email = "example@email.com"
-        val password = "secret"
+        val name = Dummy.name
+        val email = Dummy.email
+        val password = Dummy.password
 
-        Mockito.`when`(authViewModel.register(name, email, password)).thenReturn(Job())
+        Mockito.`when`(authRepository.register(name, email, password)).thenReturn(expectedResponse)
+        val actualResponse = authRepository.register(name, email, password)
+        Mockito.verify(authRepository).register(name, email, password)
+
         authViewModel.register(name, email, password)
-        Mockito.verify(authViewModel).register(name, email, password)
+        val actualRegister = authViewModel.registerResponse.getOrAwaitValue()
 
-        val expectedRegister = MutableLiveData<ResponseStatus<ApiResponse>>()
-        expectedRegister.value = ResponseStatus.Success(Dummy.generateDummyRegisterResponse())
-
-        Mockito.`when`(authViewModel.registerResponse).thenReturn(expectedRegister)
-        val actualStory = authViewModel.registerResponse.getOrAwaitValue()
-
-        Assert.assertNotNull(actualStory)
-        Assert.assertTrue(actualStory is ResponseStatus.Success)
-        Assert.assertEquals((actualStory as ResponseStatus.Success).value.error, false)
-        Assert.assertEquals(actualStory.value.error, expectedResponse.value.error)
+        assertNotNull(actualRegister)
+        assertTrue(actualRegister is ResponseStatus.Success)
+        assertEquals((actualRegister as ResponseStatus.Success).value.error, false)
+        assertEquals(actualRegister.value.error, expectedResponse.value.error)
+        assertEquals(actualRegister, actualResponse)
     }
 
     @Test
-    fun `when get token should return token`() = runTest {
-        val expectedToken = MutableLiveData<String>()
-        expectedToken.value = user.token
+    fun `when save session then get token should return token`() = runTest {
+        val expectedToken = user.token
 
         authViewModel.saveSession(user)
-        Mockito.verify(authViewModel).saveSession(user)
+        val actualToken = authViewModel.token.getOrAwaitValue()
 
-        Mockito.`when`(authViewModel.token).thenReturn(expectedToken)
-        val actualValue = authViewModel.token.getOrAwaitValue()
-
-        Assert.assertNotNull(actualValue)
-        Assert.assertEquals(actualValue, expectedToken.value)
+        assertNotNull(actualToken)
+        assertEquals(actualToken, expectedToken)
     }
 
     @Test
     fun `when destroy session should return empty token`() = runTest {
-        val expectedToken = MutableLiveData<String>()
-        expectedToken.value = null
+        val expectedToken = ""
 
         authViewModel.destroySession()
-        Mockito.verify(authViewModel).destroySession()
+        val actualToken = authViewModel.token.getOrAwaitValue()
 
-        Mockito.`when`(authViewModel.token).thenReturn(expectedToken)
-        val actualValue = authViewModel.token.getOrAwaitValue()
-
-        Assert.assertNull(actualValue)
-        Assert.assertEquals(actualValue, expectedToken.value)
+        assertEquals(actualToken, expectedToken)
     }
 }

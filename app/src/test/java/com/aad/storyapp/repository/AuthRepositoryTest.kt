@@ -1,15 +1,21 @@
 package com.aad.storyapp.repository
 
+import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import com.aad.storyapp.datasource.remote.response.ResponseStatus
+import com.aad.storyapp.di.TestInjection
 import com.aad.storyapp.helper.Dummy
+import com.aad.storyapp.helper.Dummy.loginFailureException
+import com.aad.storyapp.helper.Dummy.registerFailureException
 import com.aad.storyapp.helper.MainDispatcherRule
 import com.aad.storyapp.helper.getOrAwaitValue
 import com.aad.storyapp.model.User
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert
+import org.junit.After
+import org.junit.Assert.*
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -32,76 +38,86 @@ class AuthRepositoryTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
-    private val authRepository: AuthRepository = Mockito.mock(AuthRepository::class.java)
+    private val context: Context = Mockito.mock(Context::class.java)
 
-    private val user = User(
-        id = "user-example-id",
-        name = "User Example",
-        token = "example.token.user"
-    )
+    // Real object!
+    private lateinit var authRepository: AuthRepository
+
+    private val user = Dummy.user
+
+    @Before
+    fun setUp() {
+        TestInjection.startDI(context)
+        authRepository = AuthRepository()
+    }
+
+    @After
+    fun tearDown() {
+        TestInjection.stopDI()
+    }
 
     @Test
     fun `when login with correct credential should return response success`() = runTest {
-        val email = "example@email.com"
-        val password = "secret"
-
         val expectedResponse = ResponseStatus.Success(Dummy.generateDummyLoginResponse())
-        Mockito.`when`(authRepository.login(email, password)).thenReturn(expectedResponse)
+        val email = Dummy.email
+        val password = Dummy.password
+
         val actualResponse = authRepository.login(email, password)
 
-        Mockito.verify(authRepository).login(email, password)
-        Assert.assertNotNull(actualResponse)
-        Assert.assertTrue(actualResponse is ResponseStatus.Success)
-        Assert.assertNotNull((actualResponse as ResponseStatus.Success).value.loginResult)
-        Assert.assertEquals(actualResponse.value.error, false)
+        assertNotNull(actualResponse)
+        assertTrue(actualResponse is ResponseStatus.Success)
+        assertNotNull((actualResponse as ResponseStatus.Success).value.loginResult)
+        assertEquals(actualResponse.value.error, false)
+        assertEquals(actualResponse, expectedResponse)
     }
 
     @Test
     fun `when login with incorrect credential should return response failed`() = runTest {
-        val email = "example@email.com"
-        val password = "secret"
+        val expectedResponse = ResponseStatus.Failure(
+            loginFailureException,
+            Dummy.generateDummyLoginResponse(true)
+        )
+        val email = Dummy.wrongEmail
+        val password = Dummy.password
 
-        val expectedResponse = ResponseStatus.Failure(Exception("Unauthenticated"), Dummy.generateDummyLoginResponse(true))
-        Mockito.`when`(authRepository.login(email, password)).thenReturn(expectedResponse)
         val actualResponse = authRepository.login(email, password)
 
-        Mockito.verify(authRepository).login(email, password)
-        Assert.assertNotNull(actualResponse)
-        Assert.assertTrue(actualResponse is ResponseStatus.Failure)
-        Assert.assertNull((actualResponse as ResponseStatus.Failure).value?.loginResult)
-        Assert.assertEquals(actualResponse.value?.error, true)
+        assertNotNull(actualResponse)
+        assertTrue(actualResponse is ResponseStatus.Failure)
+        assertNull((actualResponse as ResponseStatus.Failure).value?.loginResult)
+        assertEquals(actualResponse.value?.error, expectedResponse.value?.error)
     }
 
     @Test
     fun `when register with correct input should return response success`() = runTest {
-        val name = "example account"
-        val email = "example@email.com"
-        val password = "secret"
-
         val expectedResponse = ResponseStatus.Success(Dummy.generateDummyRegisterResponse())
-        Mockito.`when`(authRepository.register(name, email, password)).thenReturn(expectedResponse)
+        val name = Dummy.name
+        val email = Dummy.email
+        val password = Dummy.password
+
         val actualResponse = authRepository.register(name, email, password)
 
-        Mockito.verify(authRepository).register(name, email, password)
-        Assert.assertNotNull(actualResponse)
-        Assert.assertTrue(actualResponse is ResponseStatus.Success)
-        Assert.assertEquals((actualResponse as ResponseStatus.Success).value.error, false)
+        assertNotNull(actualResponse)
+        assertTrue(actualResponse is ResponseStatus.Success)
+        assertEquals((actualResponse as ResponseStatus.Success).value.error, false)
+        assertEquals(actualResponse, expectedResponse)
     }
 
     @Test
     fun `when register with incorrect input should return response failure`() = runTest {
-        val name = "example account"
-        val email = "a"
-        val password = "2"
+        val expectedResponse = ResponseStatus.Failure(
+            registerFailureException,
+            Dummy.generateDummyRegisterResponse(true)
+        )
+        val name = Dummy.name
+        val email = Dummy.wrongEmail
+        val password = Dummy.password
 
-        val expectedResponse = ResponseStatus.Failure(Exception("Bad request!"), Dummy.generateDummyRegisterResponse(true))
-        Mockito.`when`(authRepository.register(name, email, password)).thenReturn(expectedResponse)
         val actualResponse = authRepository.register(name, email, password)
 
-        Mockito.verify(authRepository).register(name, email, password)
-        Assert.assertNotNull(actualResponse)
-        Assert.assertTrue(actualResponse is ResponseStatus.Failure)
-        Assert.assertEquals((actualResponse as ResponseStatus.Failure).value?.error, true)
+        assertNotNull(actualResponse)
+        assertTrue(actualResponse is ResponseStatus.Failure)
+        assertEquals((actualResponse as ResponseStatus.Failure).value?.error, expectedResponse.value?.error)
     }
 
     @Test
@@ -109,16 +125,11 @@ class AuthRepositoryTest {
         val expectedToken = MutableLiveData<String>()
         expectedToken.value = user.token
 
-        // Ensure saveSession is called
         authRepository.saveSession(user)
-        Mockito.verify(authRepository).saveSession(user)
-
-        Mockito.`when`(authRepository.getToken()).thenReturn(expectedToken)
         val actualValue = authRepository.getToken().getOrAwaitValue()
 
-        Mockito.verify(authRepository).getToken()
-        Assert.assertNotNull(actualValue)
-        Assert.assertEquals(actualValue, user.token)
+        assertNotNull(actualValue)
+        assertEquals(actualValue, expectedToken.value)
     }
 
     @Test
@@ -126,31 +137,21 @@ class AuthRepositoryTest {
         val expectedUser = MutableLiveData<User>()
         expectedUser.value = user
 
-        // Ensure saveSession is called
         authRepository.saveSession(user)
-        Mockito.verify(authRepository).saveSession(user)
-
-        Mockito.`when`(authRepository.getSession()).thenReturn(expectedUser)
         val actualValue = authRepository.getSession().getOrAwaitValue()
 
-        Mockito.verify(authRepository).getSession()
-        Assert.assertNotNull(actualValue)
-        Assert.assertEquals(actualValue, user)
+        assertNotNull(actualValue)
+        assertEquals(actualValue, expectedUser.value)
     }
 
     @Test
-    fun `when destroy session should return user with null value`() = runTest {
+    fun `when destroy session should return user with empty value`() = runTest {
         val expectedUser = MutableLiveData<User>()
-        expectedUser.value = null
+        expectedUser.value = Dummy.emptyUser
 
-        // Ensure saveSession is called
         authRepository.destroySession()
-        Mockito.verify(authRepository).destroySession()
-
-        Mockito.`when`(authRepository.getSession()).thenReturn(expectedUser)
         val actualValue = authRepository.getSession().getOrAwaitValue()
 
-        Mockito.verify(authRepository).getSession()
-        Assert.assertNull(actualValue)
+        assertEquals(actualValue, expectedUser.value)
     }
 }

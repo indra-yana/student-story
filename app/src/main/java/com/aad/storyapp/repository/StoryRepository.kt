@@ -5,6 +5,7 @@ import androidx.paging.*
 import com.aad.storyapp.datasource.remote.response.ApiResponse
 import com.aad.storyapp.datasource.remote.response.ResponseStatus
 import com.aad.storyapp.datasource.remote.response.StoryResponse
+import com.aad.storyapp.helper.wrapEspressoIdlingResource
 import com.aad.storyapp.model.Story
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -32,17 +33,19 @@ class StoryRepository : BaseRepository() {
 
     @OptIn(ExperimentalPagingApi::class)
     fun storiesWithPagination(): LiveData<PagingData<Story>> {
-        return Pager(
-            config = PagingConfig(
-                pageSize = 5
-            ),
-            remoteMediator = StoryRemoteMediator(),
-            pagingSourceFactory = {
-                // StoryPagingSource()
-                // StoryRemoteMediatorPagingSource()
-                database.storyDao().getAllStory()
-            }
-        ).liveData
+        wrapEspressoIdlingResource {
+            return Pager(
+                config = PagingConfig(
+                    pageSize = 5
+                ),
+                remoteMediator = StoryRemoteMediator(),
+                pagingSourceFactory = {
+                    // StoryPagingSource()
+                    // StoryRemoteMediatorPagingSource()
+                    database.storyDao().getAllStory()
+                }
+            ).liveData
+        }
     }
 
     suspend fun saveStories(stories: String) {
