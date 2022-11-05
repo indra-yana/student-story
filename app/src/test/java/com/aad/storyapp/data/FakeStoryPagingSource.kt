@@ -19,12 +19,11 @@ import com.aad.storyapp.model.Story
 class FakeStoryPagingSource : PagingSource<Int, LiveData<List<Story>>>() {
 
     companion object {
-
+        fun snapshot(items: List<Story>): PagingData<Story> {
+            return PagingData.from(items)
+        }
     }
 
-    fun snapshot(items: List<Story>): PagingData<Story> {
-        return PagingData.from(items)
-    }
 
     override fun getRefreshKey(state: PagingState<Int, LiveData<List<Story>>>): Int? {
         return 0

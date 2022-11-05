@@ -1,37 +1,113 @@
-- Testing ViewModel :
-# Scenario AuthViewModelTest
-    -> when user login should return success response with user (Menguji ketika user login harus mengembalikan response sukses dengan object user)
-    -> when user register should return success response (Menguji ketika user register harus  mengembalikan response sukses)
-    -> when get token should return token (Menguji ketika memanggil method getToken harus mengemablikan token)
-    -> when destroy session should return empty token (Menguji ketika memanggil destroy session harus mengembalikan token kosong)
-
-# Scenario StoryViewModelTest
-    -> When get stories should return story response with not empty list (Menguji ketika memanggil getStories harus mengembalikan response story tidak kosong)
-    -> When create stories should return response with success (Menguji ketika create stories harus mengembalikan response sukses)
-
-- Testing Repository :
-# Scenario AuthRepositoryTest
-    -> when login with correct credential should return response success (menguji ketika login dengan credential yang benar harus mengembalikan response sukses)
-    -> when login with incorrect credential should return response failed (menguji ketika login dengan credential yang salah harus mengembalikan response gagal)
-    -> when register with correct input should return response success (menguji ketika register dengan credential yang benar harus mengembalikan response sukses)
-    -> when register with incorrect input should return response failure (menguji ketika register dengan credential yang salah harus mengembalikan response gagal)
-    -> when save session and then get token should return user token (Menguji ketika memanggil method saveSession lalu memanggil method getToken harus mengemablikan token)
-    -> when save session and then get session should return user (Menguji ketika memanggil method saveSession lalu memanggil method getSession harus mengemblikan data sesi user)
-    -> when destroy session should return user with null value (Menguji ketika memanggil destroy session harus mengembalikan token kosong)
-
-# Scenario StoryRepositoryTest
-    -> When get stories should return story response with not empty list (Menguji ketika memanggil getStories harus mengembalikan response story tidak kosong)
-    -> When create stories should return response with success (Menguji ketika create stories harus mengembalikan response sukses)
-
-- Testing Dao :
-# Scenario StoryDaoTest
-    -> saveStory_Success (Menguji ketika memanggil save story dao harus mengembalikan list story)
-
-- Testing Remote Mediator
-# Scenario StoryRemoteMediatorTest
-    -> refreshLoadReturnsSuccessResultWhenMoreDataIsPresent (Menguji remote mediator berisi data list story)
-    -> whenCallCreateStoryShouldReturnSuccess (Menguji ketika memanggil endpoint create story harus mengambalikan response sukses)
-
-- Testing Activity
-# Scenario ListStoryActivityTest
-    -> getListStory_Success (Menguji untuk memastikan list story tampil di halaman list story)
+A. Unit Test
+->> Testing ViewModel :
+# Fitur Authentication (AuthViewModelTest)
+    -> Ketika berhasil login
+        - Memastikan response tidak null
+        - Memastikan ketika login dengan kredensial yang valid mengembalikan ResponseStatus.Success 
+        - Memastikan nilai error pada ResponseStatus.Success bernilai false
+        - Memastikan fungsi login dipanggil 
+        - Memastikan property loginResult pada ResponseStatus.Success bernilai sama dengan expectedResponse.loginResult yang berisi data user
+    -> Ketika berhasil register
+        - Memastikan response tidak null
+        - Memastikan ketika login dengan kredensial yang valid mengembalikan ResponseStatus.Success 
+        - Memastikan nilai error pada ResponseStatus.Success bernilai false
+        - Memastikan fungsi register dipanggil 
+    -> Ketika berhasil menyimpan session 
+        - Memanggil fungsi saveSession dengan parameter user
+        - Memastikan token tidak null 
+        - Memastikan actual token dan expected token memiliki nilai yang sama
+    -> Ketika berhasil destory session / logout
+        - Memanggil fungsi destroySession
+        - Memastikan actual token dan expected token memiliki nilai yang sama yaitu berupa string kosong 
+ 
+# Fitur Story (StoryViewModelTest)
+    -> Ketika berhasil mendapatkan list story
+        - Memastikan fungsi stories dipanggil 
+        - Memastikan response tidak null
+        - Memastikan response mengembalikan ResponseStatus.Success 
+        - Memastikan listStory dari ResponseStatus.Success tidak kosong
+        - Memastikan listStory dari actualResponse bernilai sama dengan expectedResponse
+    -> Ketika berhasil membuat story 
+        - Memastikan fungsi create dipanggil 
+        - Memastikan response tidak null
+        - Memastikan response mengembalikan ResponseStatus.Success 
+        - Memastikan nilai error pada ResponseStatus.Success bernilai false
+        - Memastikan actualResponse bernilai sama dengan expectedResponse
+    -> Ketika berhasil memuat story dengan paging 3
+        - Memastikan storiesWithPagination dipanggil
+        - Memastikan differ.snapshot bernilai tidak null
+        - Memastikan result paging data (differ.snapshot) bernilai sama dengan dummyResponse.listStory 
+        - Memastikan size paging data (differ.snapshot) bernilai sama dengan dummyResponse.listStory.size
+        - Memastikan listStory index ke-0 (property nama) sama dengan differ.snapshot index ke-0 (property nama)
+ 
+->> Testing Repository :
+# Fitur Authentication (AuthRepositoryTest)
+    -> Ketika berhasil login
+        - Memastikan response tidak null
+        - Memastikan ketika login dengan kredensial yang valid mengembalikan ResponseStatus.Success 
+        - Memastikan nilai error pada ResponseStatus.Success sama dengan expectedResponse yaitu bernilai false 
+        - Memanggil fungsi login 
+    -> Ketika gagal login
+        - Memastikan response tidak null
+        - Memastikan ketika login dengan kredensial yang tidak valid mengembalikan ResponseStatus.Failure 
+        - Memastikan property loginResult pada ResponseStatus.Failure bernilai null karena tidak berisi data user
+    -> Ketika berhasil register
+        - Memastikan response tidak null
+        - Memastikan ketika register dengan kredensial yang valid mengembalikan ResponseStatus.Success 
+        - Memastikan nilai error pada ResponseStatus.Success sama dengan expectedResponse yaitu bernilai false
+        - Memanggil fungsi register 
+    -> Ketika gagal register
+        - Memastikan response tidak null
+        - Memastikan ketika register dengan data yang tidak valid mengembalikan ResponseStatus.Failure 
+        - Memastikan property error pada ResponseStatus.Failure sama dengan expectedResponse yaitu bernilai true
+    -> Ketika berhasil menyimpan session 
+        - Memanggil method saveSession dengan parameter user
+        - Memastikan token tidak null 
+        - Memastikan actual token dan expected token memiliki nilai yang sama
+    -> Ketika get session harus mengembalikan data user
+        - Memanggil method saveSession dengan parameter user
+        - Memanggil method getSession
+        - Memastikan session tidak null 
+        - Memastikan actual user dan expected user memiliki nilai yang sama yaitu data user
+    -> Ketika berhasil destory session / logout
+        - Memanggil method destroySession
+        - Memastikan actual token dan expected token memiliki nilai yang sama yaitu berupa string kosong 
+ 
+# Fitur Story (StoryRepositoryTest) 
+    -> Ketika berhasil mendapatkan story
+        - Memastikan response tidak null
+        - Memastikan response mengembalikan ResponseStatus.Success 
+        - Memastikan listStory dari ResponseStatus.Success tidak kosong
+        - Memastikan listStory dari actualResponse bernilai sama dengan expectedResponse
+    -> Ketika berhasil membuat story
+        - Memastikan response tidak null
+        - Memastikan response mengembalikan ResponseStatus.Success 
+        - Memastikan nilai error pada ResponseStatus.Success bernilai false
+        - Memastikan actualResponse bernilai sama dengan expectedResponse
+    -> Ketika berhasil memuat story dengan paging 3
+        - Memastikan storiesWithPagination dipanggil
+        - Memastikan differ.snapshot bernilai tidak null
+        - Memastikan result paging data (differ.snapshot) bernilai sama dengan dummyResponse.listStory 
+        - Memastikan size paging data (differ.snapshot) bernilai sama dengan dummyResponse.listStory.size
+        - Memastikan listStory index ke-0 (property nama) sama dengan differ.snapshot index ke-0 (property nama)
+ 
+B. Integration Test
+# Testing StoryDaoTest
+    -> Ketika berhasil menyimpan story
+        - Memanggil insertStory untuk menyimpan data story
+        - Memastikan actualStory tidak bernilai kosong
+ 
+# Testing StoryRemoteMediatorTest
+    -> Ketika load refresh state pada remote mediator 
+        - Memastikan result berupa RemoteMediator.MediatorResult.Success
+        - Memastikan masih terdapat data pada remote mediator dengan memanggil endOfPaginationReached yang bernilai false
+    -> Ketika create story berhasil pada ApiService
+        - Memastikan result.error bernilali false
+ 
+C. End to End Testing
+# Testing ListStoryActivityTest
+    -> Ketika membuka halaman list story
+        - Memastikan rv_stories (recyclerview) tampil
+        - Memastikan item dengan text "Testing Matched View" tampil pada list
+        - Memastikan list dapat di scroll sampai ke posisi 5
+        - Memastikan item dengan text "Testing Scroll Item" tampil pada list setelah dilakukan scrolling

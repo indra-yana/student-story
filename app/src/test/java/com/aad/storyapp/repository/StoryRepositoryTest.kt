@@ -90,7 +90,7 @@ class StoryRepositoryTest {
     @Test
     fun `when get storiesWithPagination should return story response with not empty list`() = runTest {
         val dummyResponse = Dummy.generateDummyStoryResponse()
-        val data: PagingData<Story> = FakeStoryPagingSource().snapshot(dummyResponse.listStory)
+        val data: PagingData<Story> = FakeStoryPagingSource.snapshot(dummyResponse.listStory)
         val expectedStories = MutableLiveData<PagingData<Story>>()
         expectedStories.value = data
 

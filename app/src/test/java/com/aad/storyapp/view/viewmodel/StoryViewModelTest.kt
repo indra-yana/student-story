@@ -103,17 +103,19 @@ class StoryViewModelTest {
     @Test
     fun `when get storiesWithPagination should return story response with not empty list`() = runTest {
         val dummyResponse = Dummy.generateDummyStoryResponse()
-        val data: PagingData<Story> = FakeStoryPagingSource().snapshot(dummyResponse.listStory)
+        val data: PagingData<Story> = FakeStoryPagingSource.snapshot(dummyResponse.listStory)
         val expectedStories = MutableLiveData<PagingData<Story>>()
         expectedStories.value = data
 
         `when`(storyRepository.storiesWithPagination()).thenReturn(expectedStories)
-        val actualStories = storyRepository.storiesWithPagination().getOrAwaitValue()
+        val storyVM = StoryViewModel(storyRepository)
+        val actualStories = storyVM.storiesResponsePager.getOrAwaitValue()
 
         val differ = AsyncPagingDataDiffer(
             diffCallback = StoryAdapter.DIFF_CALLBACK,
             updateCallback = noopListUpdateCallback,
             workerDispatcher = Dispatchers.Main,
+            mainDispatcher = Dispatchers.Main,
         )
 
         differ.submitData(actualStories)
