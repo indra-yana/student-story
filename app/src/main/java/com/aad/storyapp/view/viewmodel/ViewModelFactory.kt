@@ -10,13 +10,13 @@ import androidx.lifecycle.ViewModelProvider
  * Github: https://github.com/indra-yana
  ****************************************************/
 
-@Suppress("UNCHECKED_CAST")
-class ViewModelFactory : ViewModelProvider.NewInstanceFactory() {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return when {
-            modelClass.isAssignableFrom(AuthViewModel::class.java) -> AuthViewModel() as T
-            modelClass.isAssignableFrom(StoryViewModel::class.java) -> StoryViewModel() as T
-            else -> throw IllegalArgumentException("Undefined ViewModelClass!")
-        }
-    }
-}
+//@Suppress("UNCHECKED_CAST")
+//class ViewModelFactory : ViewModelProvider.NewInstanceFactory() {
+//    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+//        return when {
+//            modelClass.isAssignableFrom(AuthViewModel::class.java) -> AuthViewModel() as T
+//            modelClass.isAssignableFrom(StoryViewModel::class.java) -> StoryViewModel() as T
+//            else -> throw IllegalArgumentException("Undefined ViewModelClass!")
+//        }
+//    }
+//}

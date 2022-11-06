@@ -10,8 +10,8 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import com.aad.storyapp.R
-import com.aad.storyapp.helper.Constant
 import com.aad.storyapp.helper.EspressoIdlingResource
+import com.aad.storyapp.helper.InstrumentationTestRunner
 import com.aad.storyapp.helper.JsonConverter
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -31,7 +31,7 @@ import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 @LargeTest
-class ListStoryActivityTest {
+class ListStoryActivityTest : InstrumentationTestRunner() {
     @get:Rule
     val activity = ActivityScenarioRule(ListStoryActivity::class.java)
 
@@ -40,7 +40,6 @@ class ListStoryActivityTest {
     @Before
     fun setUp() {
         mockWebServer.start(8080)
-        Constant.BASE_URL = "http://127.0.0.1:8080/v1/"
         IdlingRegistry.getInstance().register(EspressoIdlingResource.countingIdlingResource)
     }
 

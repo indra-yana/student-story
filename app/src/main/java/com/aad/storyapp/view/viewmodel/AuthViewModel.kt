@@ -2,11 +2,13 @@ package com.aad.storyapp.view.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aad.storyapp.datasource.remote.response.ApiResponse
 import com.aad.storyapp.datasource.remote.response.LoginResponse
 import com.aad.storyapp.datasource.remote.response.ResponseStatus
 import com.aad.storyapp.model.User
+import com.aad.storyapp.repository.AuthRepository
 import kotlinx.coroutines.launch
 
 /****************************************************
@@ -16,7 +18,7 @@ import kotlinx.coroutines.launch
  * Github: https://github.com/indra-yana
  ****************************************************/
 
-class AuthViewModel : BaseViewModel() {
+class AuthViewModel(private val authRepository: AuthRepository) : ViewModel() {
 
     private val _loginResponse: MutableLiveData<ResponseStatus<LoginResponse>> = MutableLiveData()
     val loginResponse: LiveData<ResponseStatus<LoginResponse>> get() = _loginResponse

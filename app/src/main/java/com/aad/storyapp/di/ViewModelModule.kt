@@ -1,5 +1,7 @@
 package com.aad.storyapp.di
 
+import com.aad.storyapp.repository.AuthRepository
+import com.aad.storyapp.repository.StoryRepository
 import com.aad.storyapp.view.viewmodel.AuthViewModel
 import com.aad.storyapp.view.viewmodel.StoryViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -12,15 +14,15 @@ import org.koin.dsl.module
  * Github: https://github.com/indra-yana
  ****************************************************/
 
-fun provideStoryViewModel(): StoryViewModel {
-    return StoryViewModel()
+fun provideStoryViewModel(storyRepository: StoryRepository): StoryViewModel {
+    return StoryViewModel(storyRepository)
 }
 
-fun provideAuthViewModel(): AuthViewModel {
-    return AuthViewModel()
+fun provideAuthViewModel(authRepository: AuthRepository): AuthViewModel {
+    return AuthViewModel(authRepository)
 }
 
 val viewModelModule = module {
-    viewModel { provideStoryViewModel() }
-    viewModel { provideAuthViewModel() }
+    viewModel { provideStoryViewModel(get()) }
+    viewModel { provideAuthViewModel(get()) }
 }

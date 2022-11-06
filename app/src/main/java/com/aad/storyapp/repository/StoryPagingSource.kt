@@ -4,7 +4,6 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.aad.storyapp.datasource.remote.IStoryApi
 import com.aad.storyapp.model.Story
-import org.koin.java.KoinJavaComponent.inject
 
 /****************************************************
  * Created by Indra Muliana
@@ -13,9 +12,7 @@ import org.koin.java.KoinJavaComponent.inject
  * Github: https://github.com/indra-yana
  ****************************************************/
 
-class StoryPagingSource : PagingSource<Int, Story>() {
-
-    private val storyApi: IStoryApi by inject(IStoryApi::class.java)
+class StoryPagingSource(private val storyApi: IStoryApi) : PagingSource<Int, Story>() {
 
     private companion object {
         const val INITIAL_PAGE_INDEX = 1

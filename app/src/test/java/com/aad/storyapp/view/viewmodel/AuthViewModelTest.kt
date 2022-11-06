@@ -16,7 +16,10 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.test.KoinTest
+import org.koin.test.inject
 import org.mockito.Mockito
+import org.mockito.Mockito.mock
 import org.mockito.junit.MockitoJUnitRunner
 
 /****************************************************
@@ -28,25 +31,23 @@ import org.mockito.junit.MockitoJUnitRunner
 
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
-class AuthViewModelTest {
+class AuthViewModelTest : KoinTest {
     @get:Rule
     val instantExecutorRule = InstantTaskExecutorRule()
 
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
-    private val context: Context = Mockito.mock(Context::class.java)
-    private val authRepository: AuthRepository = Mockito.mock(AuthRepository::class.java)
+    private val context: Context = mock(Context::class.java)
+    private val authRepository: AuthRepository = mock(AuthRepository::class.java)
 
-    // Real object!
-    private lateinit var authViewModel: AuthViewModel
+    private val authViewModel: AuthViewModel by inject()
 
     private val user = Dummy.user
 
     @Before
     fun setUp() {
         TestInjection.startDI(context)
-        authViewModel = AuthViewModel()
     }
 
     @After

@@ -1,4 +1,4 @@
-package com.aad.storyapp.di
+package com.aad.storyapp.helper
 
 import android.content.Context
 import androidx.datastore.core.DataStore
@@ -13,7 +13,6 @@ import com.aad.storyapp.datasource.local.AppPreferences
 import com.aad.storyapp.datasource.remote.ApiClient
 import com.aad.storyapp.datasource.remote.IAuthApi
 import com.aad.storyapp.datasource.remote.IStoryApi
-import com.aad.storyapp.helper.Constant
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -28,7 +27,7 @@ import org.koin.dsl.module
  ****************************************************/
 
 fun provideApiClient(): ApiClient {
-    return ApiClient(Constant.BASE_URL)
+    return ApiClient(Constant.TEST_BASE_URL)
 }
 
 fun provideAuthApi(apiClient: ApiClient): IAuthApi {
@@ -59,7 +58,7 @@ fun providePreferencesDataStore(appContext: Context): DataStore<Preferences> {
 }
 
 
-val appModule = module {
+val appModuleTest = module {
     single { provideApiClient() }
     single { provideAuthApi(get()) }
     single { provideStoryApi(get()) }

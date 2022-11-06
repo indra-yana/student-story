@@ -2,6 +2,7 @@ package com.aad.storyapp.view.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
@@ -21,7 +22,7 @@ import okhttp3.RequestBody
  * Github: https://github.com/indra-yana
  ****************************************************/
 
-class StoryViewModel(private var repo: StoryRepository? = null) : BaseViewModel() {
+class StoryViewModel(private val storyRepository: StoryRepository) : ViewModel() {
 
     private val _storyCreateResponse: MutableLiveData<ResponseStatus<ApiResponse>> = MutableLiveData()
     val storyCreateResponse: LiveData<ResponseStatus<ApiResponse>> get() = _storyCreateResponse
@@ -29,8 +30,7 @@ class StoryViewModel(private var repo: StoryRepository? = null) : BaseViewModel(
     private val _storiesResponse: MutableLiveData<ResponseStatus<StoryResponse>> = MutableLiveData()
     val storiesResponse: LiveData<ResponseStatus<StoryResponse>> get() = _storiesResponse
 
-    val storiesResponsePager: LiveData<PagingData<Story>>
-        get() = if (repo != null) repo?.storiesWithPagination()?.cachedIn(viewModelScope)!! else storyRepository.storiesWithPagination().cachedIn(viewModelScope)
+    val storiesResponsePager: LiveData<PagingData<Story>> get() = storyRepository.storiesWithPagination().cachedIn(viewModelScope)
 
     fun create(photo: MultipartBody.Part, description: RequestBody, lat: RequestBody, lon: RequestBody) = viewModelScope.launch {
         _storyCreateResponse.value = ResponseStatus.Loading

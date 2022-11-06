@@ -24,6 +24,8 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.test.KoinTest
+import org.koin.test.inject
 import org.mockito.Mockito
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
@@ -38,7 +40,7 @@ import org.mockito.junit.MockitoJUnitRunner
 
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
-class StoryViewModelTest {
+class StoryViewModelTest : KoinTest {
     @get:Rule
     val instantExecutorRule = InstantTaskExecutorRule()
 
@@ -48,13 +50,11 @@ class StoryViewModelTest {
     private val context: Context = mock(Context::class.java)
     private val storyRepository: StoryRepository = mock(StoryRepository::class.java)
 
-    // Real object!
-    private lateinit var storyViewModel: StoryViewModel
+    private val storyViewModel: StoryViewModel by inject()
 
     @Before
     fun setUp() {
         TestInjection.startDI(context)
-        storyViewModel = StoryViewModel()
     }
 
     @After

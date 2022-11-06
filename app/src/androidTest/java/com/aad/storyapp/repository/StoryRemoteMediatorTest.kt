@@ -46,7 +46,7 @@ class StoryRemoteMediatorTest {
 
     @Test
     fun refreshLoadReturnsSuccessResultWhenMoreDataIsPresent() = runTest {
-        val remoteMediator = StoryRemoteMediator()
+        val remoteMediator = StoryRemoteMediator(mockApi, mockDb)
         val pagingState = PagingState<Int, Story>(
             listOf(),
             null,

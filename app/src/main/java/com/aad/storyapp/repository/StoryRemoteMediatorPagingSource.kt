@@ -6,7 +6,6 @@ import androidx.room.withTransaction
 import com.aad.storyapp.datasource.local.AppDatabase
 import com.aad.storyapp.helper.DataClassMapper.mapStoryEntityToStoryModel
 import com.aad.storyapp.model.Story
-import org.koin.java.KoinJavaComponent.inject
 
 /****************************************************
  * Created by Indra Muliana
@@ -15,9 +14,7 @@ import org.koin.java.KoinJavaComponent.inject
  * Github: https://github.com/indra-yana
  ****************************************************/
 
-class StoryRemoteMediatorPagingSource : PagingSource<Int, Story>() {
-
-    private val database: AppDatabase by inject(AppDatabase::class.java)
+class StoryRemoteMediatorPagingSource(private val database: AppDatabase) : PagingSource<Int, Story>() {
 
     private companion object {
         const val INITIAL_PAGE_INDEX = 0

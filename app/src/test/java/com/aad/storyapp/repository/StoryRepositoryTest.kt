@@ -23,6 +23,8 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.test.KoinTest
+import org.koin.test.inject
 import org.mockito.Mockito
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
@@ -37,22 +39,20 @@ import org.mockito.junit.MockitoJUnitRunner
 
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
-class StoryRepositoryTest {
+class StoryRepositoryTest : KoinTest {
     @get:Rule
     val instantExecutorRule = InstantTaskExecutorRule()
 
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
-    private val context: Context = Mockito.mock(Context::class.java)
+    private val context: Context = mock(Context::class.java)
 
-    // Real object!
-    private lateinit var storyRepository: StoryRepository
+    private val storyRepository: StoryRepository by inject()
 
     @Before
     fun setUp() {
         TestInjection.startDI(context)
-        storyRepository = StoryRepository()
     }
 
     @After

@@ -2,6 +2,8 @@ package com.aad.storyapp.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
+import com.aad.storyapp.datasource.local.AppPreferences
+import com.aad.storyapp.datasource.remote.IAuthApi
 import com.aad.storyapp.datasource.remote.response.ApiResponse
 import com.aad.storyapp.datasource.remote.response.LoginResponse
 import com.aad.storyapp.datasource.remote.response.ResponseStatus
@@ -14,7 +16,10 @@ import com.aad.storyapp.model.User
  * Github: https://github.com/indra-yana
  ****************************************************/
 
-class AuthRepository : BaseRepository() {
+class AuthRepository(
+    private val authApi: IAuthApi,
+    private val preferences: AppPreferences
+) : BaseRepository() {
 
     suspend fun login(email: String, password: String): ResponseStatus<LoginResponse> {
         return safeApiCall(LoginResponse::class.java) {

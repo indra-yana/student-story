@@ -27,9 +27,10 @@ class StoryAdapter : PagingDataAdapter<Story, StoryViewHolder>(DIFF_CALLBACK) {
     }
 
     override fun onBindViewHolder(holder: StoryViewHolder, position: Int) {
-        val data = getItem(position) as Story
-
-        holder.bindItem(data, iOnItemClickListener)
+        val data = getItem(position)
+        if (data != null) {
+            holder.bindItem(data, iOnItemClickListener)
+        }
     }
 
     companion object {

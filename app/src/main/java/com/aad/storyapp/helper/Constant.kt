@@ -10,6 +10,7 @@ package com.aad.storyapp.helper
 @Suppress("unused")
 object Constant {
     var BASE_URL = "https://story-api.dicoding.dev/v1/"
+    var TEST_BASE_URL = "http://127.0.0.1:8080/v1/"
     const val DELAY_SPLASH = 2000L
     const val CONNECTION_TIMEOUT = 60L
 }

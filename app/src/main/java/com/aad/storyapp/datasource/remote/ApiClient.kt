@@ -21,11 +21,10 @@ import java.util.concurrent.TimeUnit
  * Github: https://github.com/indra-yana
  ****************************************************/
 
-object ApiClient {
+class ApiClient(BASE_URL: String) {
 
     private val retrofit: Retrofit
     private val preferences: AppPreferences by inject(AppPreferences::class.java)
-    var BASE_URL = Constant.BASE_URL
 
     init {
         // Add interceptors to add query param or some header

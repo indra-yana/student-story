@@ -2,6 +2,9 @@ package com.aad.storyapp.repository
 
 import androidx.lifecycle.LiveData
 import androidx.paging.*
+import com.aad.storyapp.datasource.local.AppDatabase
+import com.aad.storyapp.datasource.local.AppPreferences
+import com.aad.storyapp.datasource.remote.IStoryApi
 import com.aad.storyapp.datasource.remote.response.ApiResponse
 import com.aad.storyapp.datasource.remote.response.ResponseStatus
 import com.aad.storyapp.datasource.remote.response.StoryResponse
@@ -17,7 +20,11 @@ import okhttp3.RequestBody
  * Github: https://github.com/indra-yana
  ****************************************************/
 
-class StoryRepository : BaseRepository() {
+class StoryRepository(
+    private val storyApi: IStoryApi,
+    private val database: AppDatabase,
+    private val preferences: AppPreferences
+) : BaseRepository() {
 
     suspend fun create(photo: MultipartBody.Part, description: RequestBody, lat: RequestBody, lon: RequestBody): ResponseStatus<ApiResponse> {
         return safeApiCall(ApiResponse::class.java) {
@@ -38,7 +45,7 @@ class StoryRepository : BaseRepository() {
                 config = PagingConfig(
                     pageSize = 5
                 ),
-                remoteMediator = StoryRemoteMediator(),
+                remoteMediator = StoryRemoteMediator(storyApi, database),
                 pagingSourceFactory = {
                     // StoryPagingSource()
                     // StoryRemoteMediatorPagingSource()
